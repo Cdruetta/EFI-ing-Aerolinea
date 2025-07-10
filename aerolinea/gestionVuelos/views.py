@@ -6,6 +6,12 @@ from gestionVuelos.services.passenger import PassengerService
 
 
 # Create your views here.
+from django.shortcuts import render
+
+def home_view(request):
+    return render(request, 'gestionVuelos/home.html')
+
+
 
 def plane_list(request):
     all_planes = PlaneService.get_all()

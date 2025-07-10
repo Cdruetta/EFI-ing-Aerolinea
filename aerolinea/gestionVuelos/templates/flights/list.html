@@ -15,22 +15,30 @@
                 <table class="table is-striped is-fullwidth">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Origen</th>
                             <th>Destino</th>
-                            <th>Fecha</th>
+                            <th>Fecha Salida</th>
+                            <th>Hora Salida</th>
+                            <th>Hora Llegada</th>
+                            <th>Duración</th>
+                            <th>Estado</th>
+                            <th>Precio Base</th>
                             <th>Avión</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for flight in flights %}
-                            <tr>
-                                <td>{{ flight.id }}</td>
-                                <td>{{ flight.origin }}</td>
-                                <td>{{ flight.destination }}</td>
-                                <td>{{ flight.date }}</td>
-                                <td>{{ flight.plane }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ flight.origin }}</td>
+                            <td>{{ flight.destination }}</td>
+                            <td>{{ flight.departure_time|date:"d/m/Y" }}</td> <!-- solo fecha -->
+                            <td>{{ flight.departure_time|time:"H:i" }}</td>  <!-- solo hora -->
+                            <td>{{ flight.arrival_time|time:"H:i" }}</td>    <!-- solo hora -->
+                            <td>{{ flight.duration }}</td>
+                            <td>{{ flight.status }}</td>
+                            <td>${{ flight.base_price }}</td>
+                            <td>{{ flight.plane }}</td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
