@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
 from gestionVuelos.services.plane import PlaneService
+from gestionVuelos.services.flights import FlightService
+from gestionVuelos.services.passenger import PassengerService
 
 
 # Create your views here.
@@ -18,4 +20,24 @@ def plane_list(request):
         )
 
 def passenger_list(request):
-    return render(request, 'passenger/list.html')
+    all_passengers = PassengerService.get_all()
+    return render(
+        request,
+        'passenger/list.html',
+        {
+            'passengers': all_passengers,
+            'titulo': 'Lista de Pasajeros'
+        }
+    )
+
+
+def flight_list(request):
+    all_flights = FlightService.get_all()
+    return render(
+        request,
+        'flights/list.html',
+        {
+            'flights': all_flights,
+            'titulo': 'Lista de Vuelos'
+        }
+    )

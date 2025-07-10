@@ -11,31 +11,31 @@
         <div class="container">
             <h1 class="title">{{ titulo }}</h1>
 
-            {% if passengers %}
+            {% if flights %}
                 <table class="table is-striped is-fullwidth">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Email</th>
-                            <th>DNI</th>
+                            <th>Origen</th>
+                            <th>Destino</th>
+                            <th>Fecha</th>
+                            <th>Avión</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for passenger in passengers %}
+                        {% for flight in flights %}
                             <tr>
-                                <td>{{ passenger.id }}</td>
-                                <td>{{ passenger.first_name }}</td>
-                                <td>{{ passenger.last_name }}</td>
-                                <td>{{ passenger.email }}</td>
-                                <td>{{ passenger.dni }}</td>
+                                <td>{{ flight.id }}</td>
+                                <td>{{ flight.origin }}</td>
+                                <td>{{ flight.destination }}</td>
+                                <td>{{ flight.date }}</td>
+                                <td>{{ flight.plane }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             {% else %}
-                <p class="notification is-warning">No hay pasajeros registrados.</p>
+                <p class="notification is-warning">No hay vuelos registrados.</p>
             {% endif %}
         </div>
     </section>
