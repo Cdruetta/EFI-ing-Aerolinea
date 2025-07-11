@@ -9,7 +9,7 @@ from gestionVuelos.services.passenger import PassengerService
 from django.shortcuts import render
 
 def home_view(request):
-    return render(request, 'gestionVuelos/home.html')
+    return render(request, 'home.html')
 
 
 
