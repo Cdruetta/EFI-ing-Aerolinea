@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from gestionVuelos.services.plane import PlaneService
 from gestionVuelos.services.flights import FlightService
 from gestionVuelos.services.passenger import PassengerService
+from gestionVuelos.models import Flight
 
 
 # Create your views here.
@@ -47,3 +48,8 @@ def flight_list(request):
             'titulo': 'Lista de Vuelos'
         }
     )
+
+def flight_detail(request, pk):
+    flight = get_object_or_404(Flight, pk=pk)
+    passenger_id = request.GET.get('passenger_id')  # Recibimos por query param (opcional)
+    return render(request, 'flights/detail.html', {'flight': flight, 'passenger_id': passenger_id})

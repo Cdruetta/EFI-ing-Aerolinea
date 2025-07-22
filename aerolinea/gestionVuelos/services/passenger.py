@@ -1,14 +1,25 @@
 from typing import List, Optional
+from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404
 
-from gestionVuelos.models import Passenger
+from gestionVuelos.models import Passenger, Reservation
 from gestionVuelos.repositories.passenger import PassengerRepository
+
 
 class PassengerService:
 
     @staticmethod
     def get_all() -> List[Passenger]:
         return list(PassengerRepository.get_all())
+
+    @staticmethod
+    def get_all_with_reservations() -> List[Passenger]:
+        reservations_with_flights = Reservation.objects.select_related('flight')
+        return list(
+            Passenger.objects.prefetch_related(
+                Prefetch('reservation_set', queryset=reservations_with_flights)
+            ).all()
+        )
 
     @staticmethod
     def get_by_id(passenger_id: int) -> Optional[Passenger]:

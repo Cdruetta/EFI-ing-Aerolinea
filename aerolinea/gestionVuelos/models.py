@@ -7,6 +7,7 @@ import uuid
 
 # class avión
 class Plane(models.Model):
+    manufacturer = models.CharField(max_length=100,  default='Desconocido')
     model = models.CharField(max_length=30)  # Nombre o código del modelo del avión
     capacity = models.IntegerField()  # Capacidad total de asientos
     available_seats = (
@@ -14,7 +15,7 @@ class Plane(models.Model):
     )  # Asientos disponibles (puede actualizarse según reservas)
 
     def __str__(self):
-        return f"{self.model} - {self.capacity} seats"
+        return f"{self.manufacturer} {self.model} - {self.capacity} seats"
 
 
 # class asiento dentro de un avión

@@ -1,32 +1,24 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Planes List{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% extends 'base.html' %}
 
-    <!-- Bootstrap 4 CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+{% block title %}Lista de Aviones{% endblock %}
 
-    {% block extra_css %}{% endblock %}
-    </head>
-    <body>
-        Planes Template
-        <ul>
-            {% for plane in planes%}
-                <li>{{plane.model}} - {{plane.capacity}} - {{plane.available_seats}} </li>
-            
-            {% endfor %}
-        </ul>
-    <div class="container mt-4">
-        {% block content %}
-        {% endblock %}
+{% block content %}
+    <h2 class="mb-4">Lista de Aviones</h2>
+    <div class="row">
+        {% for plane in planes %}
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ plane.model }}</h5>
+                        <p class="card-text">
+                            <strong>Capacidad:</strong> {{ plane.capacity }} pasajeros<br>
+                            <strong>Fabricante:</strong> {{ plane.manufacturer }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No hay aviones disponibles.</p>
+        {% endfor %}
     </div>
-
-    <!-- Bootstrap 4 JS (opcional para interacciones) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    {% block extra_js %}{% endblock %}
-    </body>
-</html>
+{% endblock %}
