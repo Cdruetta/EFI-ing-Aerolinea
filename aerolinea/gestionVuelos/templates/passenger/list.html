@@ -18,7 +18,7 @@
                         <strong>Teléfono:</strong> {{ passenger.phone }}
                     </p>
                     {% if passenger.reservation_set.first %}
-                        <a href="{% url 'flight_detail' passenger.reservation_set.first.flight.id %}?passenger_id={{ passenger.id }}" class="btn btn-primary mt-auto">
+                        <a href="{% url 'gestionVuelos:flight_detail' passenger.reservation_set.first.flight.id %}?passenger_id={{ passenger.id }}" class="btn btn-primary mt-auto">
                             Ver vuelo comprado
                         </a>
                     {% else %}

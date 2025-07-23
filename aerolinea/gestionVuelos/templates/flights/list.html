@@ -19,6 +19,15 @@
                         <strong>Estado:</strong> {{ flight.status }}<br>
                         <strong>Precio Base:</strong> ${{ flight.base_price }}
                     </p>
+                    <a href="{% url 'gestionVuelos:flight_detail' flight.id %}" class="btn btn-primary">
+                        Ver detalles
+                    </a>
+                    <a href="{% url 'gestionVuelos:flight_edit' flight.pk %}" class="btn btn-warning btn-sm me-2">
+                        Editar
+                    </a>
+                    <a href="{% url 'gestionVuelos:flight_delete' flight.pk %}" class="btn btn-danger btn-sm">
+                        Eliminar
+                    </a>
                 </div>
             </div>
         </div>
@@ -29,6 +38,3 @@
 </div>
 
 {% endblock %}
-
-
-

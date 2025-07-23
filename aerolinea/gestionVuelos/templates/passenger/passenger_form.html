@@ -1,4 +1,4 @@
-{% extends 'gestionVuelos/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Registrar Pasajero{% endblock %}
 
@@ -11,31 +11,37 @@
         <form method="post" novalidate>
         {% csrf_token %}
         {{ form.non_field_errors }}
+        
         <div class="form-group">
             <label for="{{ form.full_name.id_for_label }}">Nombre completo</label>
             {{ form.full_name }}
             {{ form.full_name.errors }}
         </div>
+        
         <div class="form-group">
             <label for="{{ form.document_type.id_for_label }}">Tipo de Documento</label>
             {{ form.document_type }}
             {{ form.document_type.errors }}
         </div>
+        
         <div class="form-group">
             <label for="{{ form.document_number.id_for_label }}">Número de Documento</label>
             {{ form.document_number }}
             {{ form.document_number.errors }}
         </div>
+        
         <div class="form-group">
             <label for="{{ form.email.id_for_label }}">Email</label>
             {{ form.email }}
             {{ form.email.errors }}
         </div>
+        
         <div class="form-group">
             <label for="{{ form.phone.id_for_label }}">Teléfono</label>
             {{ form.phone }}
             {{ form.phone.errors }}
         </div>
+        
         <div class="form-group">
             <label for="{{ form.birth_date.id_for_label }}">Fecha de Nacimiento</label>
             {{ form.birth_date }}
@@ -43,7 +49,7 @@
         </div>
 
         <button type="submit" class="btn btn-success">Guardar</button>
-        <a href="{% url 'passenger_list' %}" class="btn btn-secondary">Cancelar</a>
+        <a href="{% url 'gestionVuelos:passenger_list' %}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 </div>
