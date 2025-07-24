@@ -7,7 +7,7 @@ import uuid
 
 # class avión
 class Plane(models.Model):
-    manufacturer = models.CharField(max_length=100,  default='Desconocido')
+    manufacturer = models.CharField(max_length=100, default="Desconocido")
     model = models.CharField(max_length=30)  # Nombre o código del modelo del avión
     capacity = models.IntegerField()  # Capacidad total de asientos
     available_seats = (
@@ -43,14 +43,21 @@ class Seat(models.Model):
 
 # clase pasajero
 class Passenger(models.Model):
-    full_name = models.CharField(max_length=100)  # Nombre completo
-    document_number = models.CharField(max_length=50, unique=True)  # Documento único
-    email = models.EmailField()  # Email de contacto
-    phone = models.CharField(max_length=20)  # Número de teléfono
-    birth_date = models.DateField()  # Fecha de nacimiento
+    DNI = "DNI"
+    PASSPORT = "Pasaporte"
+    DOCUMENT_TYPE_CHOICES = [
+        (DNI, "DNI"),
+        (PASSPORT, "Pasaporte"),
+    ]
+
+    full_name = models.CharField(max_length=100)
+    document_number = models.CharField(max_length=50, unique=True)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    birth_date = models.DateField()
     document_type = models.CharField(
-        max_length=50
-    )  # Tipo de documento (DNI, pasaporte, etc.)
+        max_length=50, choices=DOCUMENT_TYPE_CHOICES, default=DNI
+    )
 
     def __str__(self):
         return f"{self.full_name} - {self.document_number}"

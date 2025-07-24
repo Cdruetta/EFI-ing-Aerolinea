@@ -5,6 +5,10 @@
 {% block content %}
 <h2 class="mb-4">Lista de Vuelos</h2>
 
+<div class="mb-3">
+    <a href="{% url 'gestionVuelos:flight_create' %}" class="btn btn-success">Crear nuevo vuelo</a>
+</div>
+
 <div class="row">
     {% if flights %}
         {% for flight in flights %}

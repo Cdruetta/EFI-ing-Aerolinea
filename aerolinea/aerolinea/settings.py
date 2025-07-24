@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'gestionVuelos',
     'home',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

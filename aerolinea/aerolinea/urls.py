@@ -17,9 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.shortcuts import redirect
+from gestionVuelos.views import flight_create as flight_create  
 
 urlpatterns = [
     path('', lambda request: redirect('gestionVuelos:home'), name='root_redirect'),  
     path('admin/', admin.site.urls),
     path('gestionVuelos/', include(('gestionVuelos.urls', 'gestionVuelos'), namespace='gestionVuelos')),
+    path('vuelos/crear/', flight_create, name='flight_create'),
 ]
