@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+from django.urls import reverse_lazy
 import os
 from pathlib import Path
 
@@ -130,3 +131,9 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# URLs para autenticación
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = reverse_lazy('gestionVuelos:home')
+LOGOUT_REDIRECT_URL = reverse_lazy('login')

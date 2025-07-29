@@ -1,117 +1,88 @@
-from django.shortcuts import render, get_object_or_404, redirect
-
-from gestionVuelos.models import Passenger, Flight
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from gestionVuelos.models import Passenger, Flight, Plane
 from gestionVuelos.forms import FlightForm, PassengerForm
-from gestionVuelos.services.plane import PlaneService
-from gestionVuelos.services.flights import FlightService
-from gestionVuelos.services.passenger import PassengerService
 
 
-def home_view(request):
-    return render(request, "home.html")
+class HomeView(TemplateView):
+    template_name = "home.html"
 
 
-def plane_list(request):
-    all_planes = PlaneService.get_all()
-    return render(
-        request, "planes/list.html", dict(planes=all_planes, otro_atributo="Atributo 2")
-    )
+class PassengerListView(ListView):
+    model = Passenger
+    template_name = "passenger/list.html"
+    context_object_name = "passengers"
 
 
-def passenger_list(request):
-    all_passengers = PassengerService.get_all()
-    return render(
-        request,
-        "passenger/list.html",
-        dict(passengers=all_passengers, titulo="Lista de Pasajeros"),
-    )
+class PassengerDetailView(DetailView):
+    model = Passenger
+    template_name = "passenger/detail.html"
+    context_object_name = "passenger"
 
 
-def passenger_detail(request, pk):
-    passenger = PassengerService.get_by_id(pk)
-    passenger = get_object_or_404(Passenger, pk=pk) if passenger is None else passenger
-    return render(request, "passenger/detail.html", dict(passenger=passenger))
+class PassengerCreateView(CreateView):
+    model = Passenger
+    form_class = PassengerForm
+    template_name = "passenger/create.html"
+    success_url = reverse_lazy("gestionVuelos:passenger_list")
 
 
-def passenger_create(request):
-    if request.method == "POST":
-        form = PassengerForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("gestionVuelos:passenger_list")
-    else:
-        form = PassengerForm()
-    return render(request, "passenger/create.html", dict(form=form))
+class PassengerUpdateView(UpdateView):
+    model = Passenger
+    form_class = PassengerForm
+    template_name = "passenger/edit.html"
+
+    def get_success_url(self):
+        return reverse_lazy("gestionVuelos:passenger_detail", kwargs={"pk": self.object.pk})
 
 
-def passenger_edit(request, pk):
-    passenger = get_object_or_404(Passenger, pk=pk)
-    if request.method == "POST":
-        form = PassengerForm(request.POST, instance=passenger)
-        if form.is_valid():
-            form.save()
-            return redirect("gestionVuelos:passenger_detail", pk=pk)
-    else:
-        form = PassengerForm(instance=passenger)
-    return render(request, "passenger/edit.html", dict(form=form, passenger=passenger))
+class PassengerDeleteView(DeleteView):
+    model = Passenger
+    template_name = "passenger/delete_confirm.html"
+    success_url = reverse_lazy("gestionVuelos:passenger_list")
 
 
-def passenger_delete(request, pk):
-    passenger = get_object_or_404(Passenger, pk=pk)
-    if request.method == "POST":
-        passenger.delete()
-        return redirect("gestionVuelos:passenger_list")
-    return render(request, "passenger/delete_confirm.html", dict(passenger=passenger))
+class FlightListView(ListView):
+    model = Flight
+    template_name = "flights/list.html"
+    context_object_name = "flights"
 
 
-def flight_list(request):
-    all_flights = FlightService.get_all()
-    return render(
-        request,
-        "flights/list.html",
-        dict(flights=all_flights, titulo="Lista de Vuelos"),
-    )
+class FlightDetailView(DetailView):
+    model = Flight
+    template_name = "flights/detail.html"
+    context_object_name = "flight"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["passenger_id"] = self.request.GET.get("passenger_id")
+        return context
 
 
-def flight_detail(request, pk):
-    flight = get_object_or_404(Flight, pk=pk)
-    passenger_id = request.GET.get("passenger_id")
-    return render(
-        request, "flights/detail.html", dict(flight=flight, passenger_id=passenger_id)
-    )
+class FlightCreateView(CreateView):
+    model = Flight
+    form_class = FlightForm
+    template_name = "flights/create.html"
+    success_url = reverse_lazy("gestionVuelos:flight_list")
 
 
-def flight_edit(request, pk):
-    flight = get_object_or_404(Flight, pk=pk)
+class FlightUpdateView(UpdateView):
+    model = Flight
+    form_class = FlightForm
+    template_name = "flights/edit.html"
 
-    if request.method == "POST":
-        form = FlightForm(request.POST, instance=flight)
-        if form.is_valid():
-            form.save()
-            return redirect("gestionVuelos:flight_detail", pk=pk)
-    else:
-        form = FlightForm(instance=flight)
-    return render(
-        request,
-        "flights/edit.html",
-        dict(form=form, flight=flight, titulo="Editar Vuelo"),
-    )
+    def get_success_url(self):
+        return reverse_lazy("gestionVuelos:flight_detail", kwargs={"pk": self.object.pk})
 
 
-def flight_create(request):
-    if request.method == "POST":
-        form = FlightForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("gestionVuelos:flight_list")
-    else:
-        form = FlightForm()
-    return render(request, "flights/create.html", dict(form=form))
+class FlightDeleteView(DeleteView):
+    model = Flight
+    template_name = "flights/delete_confirm.html"
+    success_url = reverse_lazy("gestionVuelos:flight_list")
 
 
-def flight_delete(request, pk):
-    flight = get_object_or_404(Flight, pk=pk)
-    if request.method == "POST":
-        flight.delete()
-        return redirect("gestionVuelos:flight_list")
-    return render(request, "flights/delete_confirm.html", dict(flight=flight))
+class PlaneListView(ListView):
+    model = Plane
+    template_name = "planes/list.html"
+    context_object_name = "planes"

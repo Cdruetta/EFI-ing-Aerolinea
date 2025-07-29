@@ -18,24 +18,44 @@
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'gestionVuelos:home' %}">
-                <i class="fas fa-plane"></i> Aerolínea GCSoft
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'gestionVuelos:flight_list' %}">Vuelos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'gestionVuelos:plane_list' %}">Aviones</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'gestionVuelos:passenger_list' %}">Pasajeros</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/admin/">Admin</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'gestionVuelos:home' %}">
+            <i class="fas fa-plane"></i> Aerolínea GCSoft 
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'gestionVuelos:flight_list' %}">Vuelos</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'gestionVuelos:plane_list' %}">Aviones</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'gestionVuelos:passenger_list' %}">Pasajeros</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/">Admin</a></li>
+            </ul>
 
+            <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <span class="nav-link disabled">Hola, {{ user.username }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{% url 'logout' %}">Cerrar sesión</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'registro' %}">Registrarse</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
     <!-- Hero Section -->
     <section class="hero-section d-flex align-items-center justify-content-center text-center mb-5">
         <div class="container">
@@ -56,6 +76,7 @@
         {% endfor %}
     </div>
     {% endif %}
+
 
     <!-- Contenido -->
     <main class="container my-5">

@@ -17,11 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.shortcuts import redirect
-from gestionVuelos.views import flight_create as flight_create  
+from django.contrib.auth import views as auth_views
+from gestionVuelos.views import FlightCreateView
+from home.views import RegisterView, LogoutView
 
 urlpatterns = [
-    path('', lambda request: redirect('gestionVuelos:home'), name='root_redirect'),  
+    path('', lambda request: redirect('gestionVuelos:home'), name='root_redirect'),
     path('admin/', admin.site.urls),
     path('gestionVuelos/', include(('gestionVuelos.urls', 'gestionVuelos'), namespace='gestionVuelos')),
-    path('vuelos/crear/', flight_create, name='flight_create'),
+    path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('registro/', RegisterView.as_view(), name='registro'),
 ]
+

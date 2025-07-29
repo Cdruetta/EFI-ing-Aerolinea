@@ -1,36 +1,45 @@
 from django.urls import path
 from .views import (
-    home_view,
-    plane_list,
-    passenger_list,
-    flight_list,
-    flight_detail,
-    flight_edit,
-    flight_delete,
-    flight_create,
-    passenger_create,
-    passenger_detail,
-    passenger_edit,
-    passenger_delete,
+    HomeView,
+    FlightListView, 
+    FlightDetailView, 
+    FlightCreateView, 
+    FlightUpdateView, 
+    FlightDeleteView,
+    PassengerListView, 
+    PassengerDetailView, 
+    PassengerCreateView, 
+    PassengerUpdateView, 
+    PassengerDeleteView,
+    PlaneListView,
 )
+from home.views import LoginView, LogoutView, RegisterView
+
+app_name = "gestionVuelos"
 
 urlpatterns = [
-    path(route="", view=home_view, name="home"),
-    path(route="flights/", view=flight_list, name="flight_list"),
-    path(route="flights/<int:pk>/", view=flight_detail, name="flight_detail"),
-    path(route="flights/<int:pk>/edit/", view=flight_edit, name="flight_edit"),
-    path(route="flights/<int:pk>/delete/", view=flight_delete, name="flight_delete"),
-    path(route="flights/create/", view=flight_create, name="flight_create"),
-    # Primero las rutas más específicas para passengers:
-    path(route="passenger/create/", view=passenger_create, name="passenger_create"),
-    path(route="passenger/<int:pk>/edit/", view=passenger_edit, name="passenger_edit"),
-    path(
-        route="passenger/<int:pk>/delete/",
-        view=passenger_delete,
-        name="passenger_delete",
-    ),
-    path(route="passenger/<int:pk>/", view=passenger_detail, name="passenger_detail"),
-    # Luego la ruta general de lista
-    path(route="passenger/", view=passenger_list, name="passenger_list"),
-    path(route="planes/", view=plane_list, name="plane_list"),
+    path("", HomeView.as_view(), name="home"),
+
+    # Vuelos
+    path("flights/", FlightListView.as_view(), name="flight_list"),
+    path("flights/create/", FlightCreateView.as_view(), name="flight_create"),
+    path("flights/<int:pk>/", FlightDetailView.as_view(), name="flight_detail"),
+    path("flights/<int:pk>/edit/", FlightUpdateView.as_view(), name="flight_edit"),
+    path("flights/<int:pk>/delete/", FlightDeleteView.as_view(), name="flight_delete"),
+
+    # Pasajeros
+    path("passengers/", PassengerListView.as_view(), name="passenger_list"),
+    path("passengers/create/", PassengerCreateView.as_view(), name="passenger_create"),
+    path("passengers/<int:pk>/", PassengerDetailView.as_view(), name="passenger_detail"),
+    path("passengers/<int:pk>/edit/", PassengerUpdateView.as_view(), name="passenger_edit"),
+    path("passengers/<int:pk>/delete/", PassengerDeleteView.as_view(), name="passenger_delete"),
+
+    # Aviones
+    path("planes/", PlaneListView.as_view(), name="plane_list"),
+
+    
+    # Rutas para autenticación usando vistas de home
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('registro/', RegisterView.as_view(), name='registro')
 ]
