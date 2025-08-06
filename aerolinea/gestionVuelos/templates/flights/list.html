@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Vuelos{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Lista de Vuelos</h2>
+
+<div class="mb-3">
+    <a href="{% url 'gestionVuelos:flight_create' %}" class="btn btn-success">Crear nuevo vuelo</a>
+</div>
+
+<div class="row">
+    {% if flights %}
+        {% for flight in flights %}
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ flight.origin }} → {{ flight.destination }}</h5>
+                    <p class="card-text mb-1">
+                        <strong>Salida:</strong> {{ flight.departure_time|date:"d/m/Y H:i" }}<br>
+                        <strong>Llegada:</strong> {{ flight.arrival_time|date:"d/m/Y H:i" }}<br>
+                        <strong>Duración:</strong> {{ flight.duration }}<br>
+                        <strong>Estado:</strong> {{ flight.status }}<br>
+                        <strong>Precio Base:</strong> ${{ flight.base_price }}
+                    </p>
+                    <a href="{% url 'gestionVuelos:flight_detail' flight.id %}" class="btn btn-primary">
+                        Ver detalles
+                    </a>
+                    <a href="{% url 'gestionVuelos:flight_edit' flight.pk %}" class="btn btn-warning btn-sm me-2">
+                        Editar
+                    </a>
+                    <a href="{% url 'gestionVuelos:flight_delete' flight.pk %}" class="btn btn-danger btn-sm">
+                        Eliminar
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No hay vuelos disponibles.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
