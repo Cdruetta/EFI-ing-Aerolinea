@@ -1,17 +1,21 @@
 from django.urls import reverse_lazy
+from django.http import HttpRequest
+from django.contrib.auth.models import User, AbstractBaseUser
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.shortcuts import redirect
+
 from gestionVuelos.models import Passenger, Flight, Plane, Reservation
-from gestionVuelos.forms import FlightForm, PassengerForm
+from gestionVuelos.forms import FlightForm, PassengerForm, PlaneForm
 
 # Mixin para restringir acceso a staff o superusuario
 class StaffRequiredMixin(UserPassesTestMixin):
-    raise_exception = True  # Lanza PermissionDenied en vez de redirigir
+    request: HttpRequest
+    raise_exception = True  
 
     def test_func(self):
-        user = self.request.user
+        user = self.request.user  
         return user.is_authenticated and (user.is_staff or user.is_superuser)
 
 class HomeView(TemplateView):
@@ -19,26 +23,26 @@ class HomeView(TemplateView):
 
 
 # --- Pasajeros ---
-class PassengerListView(LoginRequiredMixin, ListView):
+class PassengerListView(LoginRequiredMixin, StaffRequiredMixin,  ListView):
     model = Passenger
     template_name = "passenger/list.html"
     context_object_name = "passengers"
     login_url = '/login/'
 
-class PassengerDetailView(LoginRequiredMixin, DetailView):
+class PassengerDetailView(LoginRequiredMixin, StaffRequiredMixin,  DetailView):
     model = Passenger
     template_name = "passenger/detail.html"
     context_object_name = "passenger"
     login_url = '/login/'
 
-class PassengerCreateView(StaffRequiredMixin, LoginRequiredMixin, CreateView):
+class PassengerCreateView(LoginRequiredMixin, StaffRequiredMixin,  CreateView):
     model = Passenger
     form_class = PassengerForm
     template_name = "passenger/create.html"
     success_url = reverse_lazy("gestionVuelos:passenger_list")
     login_url = '/login/'
 
-class PassengerUpdateView(StaffRequiredMixin, LoginRequiredMixin, UpdateView):
+class PassengerUpdateView(LoginRequiredMixin, StaffRequiredMixin,  UpdateView):
     model = Passenger
     form_class = PassengerForm
     template_name = "passenger/edit.html"
@@ -95,11 +99,39 @@ class FlightDeleteView(StaffRequiredMixin, LoginRequiredMixin, DeleteView):
     login_url = '/login/'
 
 
-# --- Aviones ---
-class PlaneListView(LoginRequiredMixin, ListView):
+# --- Planes ---
+class PlaneListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
     model = Plane
     template_name = "planes/list.html"
     context_object_name = "planes"
+    login_url = '/login/'
+
+class PlaneDetailView(StaffRequiredMixin, LoginRequiredMixin, DetailView):
+    model = Plane
+    template_name = "planes/detail.html"
+    context_object_name = "plane"
+    login_url = '/login/'
+
+class PlaneCreateView(StaffRequiredMixin, LoginRequiredMixin, CreateView):
+    model = Plane
+    form_class = PlaneForm
+    template_name = "planes/plane_form.html"
+    success_url = reverse_lazy("gestionVuelos:plane_list")
+    login_url = '/login/'
+
+class PlaneUpdateView(StaffRequiredMixin, LoginRequiredMixin, UpdateView):
+    model = Plane
+    form_class = PlaneForm
+    template_name = "planes/plane_form.html"
+    success_url = reverse_lazy("gestionVuelos:plane_list")
+    login_url = '/login/'
+
+    
+
+class PlaneDeleteView(StaffRequiredMixin, LoginRequiredMixin, DeleteView):
+    model = Plane
+    template_name = "planes/plane_confirm_delete.html"
+    success_url = reverse_lazy("gestionVuelos:plane_list")
     login_url = '/login/'
 
 

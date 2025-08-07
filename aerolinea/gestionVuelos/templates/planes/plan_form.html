@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Registrar Avión{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">{% if object %}Editar Avión{% else %}Registrar nuevo avión{% endif %}</h4>
+    </div>
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <div class="mb-3">
+                <label for="{{ form.model.id_for_label }}" class="form-label">Modelo</label>
+                {{ form.model|add_class:"form-control" }}
+                {{ form.model.errors }}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.manufacturer.id_for_label }}" class="form-label">Fabricante</label>
+                {{ form.manufacturer|add_class:"form-control" }}
+                {{ form.manufacturer.errors }}
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.capacity.id_for_label }}" class="form-label">Capacidad</label>
+                {{ form.capacity|add_class:"form-control" }}
+                {{ form.capacity.errors }}
+            </div>
+
+            
+
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <a href="{% url 'gestionVuelos:plan_list' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

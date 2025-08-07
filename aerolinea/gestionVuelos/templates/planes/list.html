@@ -1,34 +1,43 @@
 {% extends 'base.html' %}
 
-{% block title %}Lista de Aviones{% endblock %}
-
 {% block content %}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Lista de Aviones</h2>
-        <a href="{% url 'gestionVuelos:home' %}" class="btn btn-success">Inicio</a>
+    <h2>Listado de Aviones</h2>
 
-    </div>
+    <a href="{% url 'gestionVuelos:plane_create' %}" class="btn btn-success mb-3">
+        ➕ Agregar Avión
+    </a>
 
-    <div class="row">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Modelo</th>
+            <th>Fabricante</th>
+            <th>Capacidad</th>
+        </tr>
+        </thead>
+        <tbody>
         {% for plane in planes %}
-            <div class="col-md-4 mb-3">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ plane.model }}</h5>
-                        <p class="card-text mb-3">
-                            <strong>Capacidad:</strong> {{ plane.capacity }} pasajeros<br>
-                            <strong>Fabricante:</strong> {{ plane.manufacturer }}
-                        </p>
-                        <div class="mt-auto">
-                            {# <a href="{% url 'plane_edit' plane.pk %}" class="btn btn-warning btn-sm me-2">Editar</a> #}
-
-                             {# <a href="{% url 'plane_delete' plane.pk %}" class="btn btn-danger btn-sm">Eliminar</a>#}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <tr>
+            <td>{{ plane.model }}</td>
+            <td>{{ plane.manufacturer }}</td>
+            <td>{{ plane.capacity }}</td>
+            <td>
+                <a href="{% url 'gestionVuelos:plane_edit' plane.pk %}" class="btn btn-sm btn-warning" title="Editar">
+                ✏️
+                </a>
+                <form action="{% url 'gestionVuelos:plane_delete' plane.pk %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar este avión?')">
+                    🗑️
+                </button>
+                </form>
+            </td>
+            </tr>
         {% empty %}
-            <p>No hay aviones disponibles.</p>
+            <tr>
+            <td colspan="4">No hay aviones registrados.</td>
+            </tr>
         {% endfor %}
-    </div>
+        </tbody>
+    </table>
 {% endblock %}

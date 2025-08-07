@@ -7,8 +7,12 @@ from gestionVuelos.models import Flight, Passenger, Seat, Reservation, Ticket, P
 @admin.register(Plane)
 class PlaneAdmin(admin.ModelAdmin):
     list_display = ("id", "model", "capacity", "available_seats")
-    list_filter = ("capacity", "available_seats")
-    search_fields = ("capacity", "available_seats")
+    list_filter = ("capacity",)
+    search_fields = ("model",)
+
+    def available_seats(self, obj):
+        return obj.seat_set.filter(status='available').count()
+    available_seats.short_description = "Available Seats"
 
 
 @admin.register(Flight)

@@ -6,7 +6,9 @@
 <h2 class="mb-4">Lista de Vuelos</h2>
 
 <div class="mb-3">
+    {% if user.is_staff %}
     <a href="{% url 'gestionVuelos:flight_create' %}" class="btn btn-success">Crear nuevo vuelo</a>
+    {% endif %}
 </div>
 
 <div class="row">
@@ -16,22 +18,35 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">{{ flight.origin }} → {{ flight.destination }}</h5>
+                    <p><strong>Avión:</strong> {{ flight.plane.model }} - {{ flight.plane.manufacturer }}</p>
                     <p class="card-text mb-1">
                         <strong>Salida:</strong> {{ flight.departure_time|date:"d/m/Y H:i" }}<br>
                         <strong>Llegada:</strong> {{ flight.arrival_time|date:"d/m/Y H:i" }}<br>
                         <strong>Duración:</strong> {{ flight.duration }}<br>
                         <strong>Estado:</strong> {{ flight.status }}<br>
-                        <strong>Precio Base:</strong> ${{ flight.base_price }}
+                        <strong>Precio Base:</strong> ${{ flight.base_price }}<br>
+                        <strong>Asientos Ocupados:</strong> {{ flight.seats_occupied }}<br>
+                        <strong>Asientos Disponibles:</strong> {{ flight.seats_available }}
                     </p>
                     <a href="{% url 'gestionVuelos:flight_detail' flight.id %}" class="btn btn-primary">
                         Ver detalles
                     </a>
+
+                    {% if user.is_staff %}
                     <a href="{% url 'gestionVuelos:flight_edit' flight.pk %}" class="btn btn-warning btn-sm me-2">
                         Editar
                     </a>
                     <a href="{% url 'gestionVuelos:flight_delete' flight.pk %}" class="btn btn-danger btn-sm">
                         Eliminar
                     </a>
+                    {% endif %}
+
+                    {# Botón para usuarios no staff pero autenticados #}
+                    {% if user.is_authenticated and not user.is_staff %}
+                    <a href="{% url 'gestionVuelos:reservation_create' %}?flight_id={{ flight.id }}" class="btn btn-success mt-2">
+                        Reservar vuelo
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
