@@ -1,0 +1,50 @@
+<!-- templates/reservations/detail.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Detalle de la Reserva</h2>
+
+    <h3>Datos del Pasajero</h3>
+    <ul>
+        <li>Nombre completo: {{ reservation.passenger.full_name }}</li>
+        <li>Documento: {{ reservation.passenger.document_type }} {{ reservation.passenger.document_number }}</li>
+        <li>Email: {{ reservation.passenger.email }}</li>
+        <li>Teléfono: {{ reservation.passenger.phone }}</li>
+        <li>Fecha de nacimiento: {{ reservation.passenger.birth_date }}</li>
+    </ul>
+
+    <h3>Datos del Vuelo</h3>
+    <ul>
+        <li>Origen: {{ reservation.flight.origin }}</li>
+        <li>Destino: {{ reservation.flight.destination }}</li>
+        <li>Salida: {{ reservation.flight.departure_time }}</li>
+        <li>Llegada: {{ reservation.flight.arrival_time }}</li>
+        <li>Duración: {{ reservation.flight.duration }}</li>
+        <li>Estado: {{ reservation.flight.status }}</li>
+    </ul>
+
+    <h3>Avión</h3>
+    <ul>
+        <li>Modelo: {{ reservation.flight.plane.model }}</li>
+        <li>Fabricante: {{ reservation.flight.plane.manufacturer }}</li>
+        <li>Capacidad: {{ reservation.flight.plane.capacity }}</li>
+    </ul>
+
+    <h3>Asiento</h3>
+    <ul>
+        <li>Número: {{ reservation.seat.number }}</li>
+        <li>Fila: {{ reservation.seat.row }}</li>
+        <li>Columna: {{ reservation.seat.column }}</li>
+        <li>Tipo: {{ reservation.seat.seat_type }}</li>
+    </ul>
+
+    <h3>Precio y Código</h3>
+    <ul>
+        <li>Precio: ${{ reservation.price }}</li>
+        <li>Código de reserva: {{ reservation.reservation_code }}</li>
+    </ul>
+
+    <a href="{% url 'gestionVuelos:flight_list' %}">Volver a la lista de vuelos</a>
+
+{% endblock %}

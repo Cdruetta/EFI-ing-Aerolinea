@@ -3,41 +3,40 @@
 {% block content %}
     <h2>Listado de Aviones</h2>
 
-    <a href="{% url 'gestionVuelos:plane_create' %}" class="btn btn-success mb-3">
-        ➕ Agregar Avión
-    </a>
-
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Modelo</th>
-            <th>Fabricante</th>
-            <th>Capacidad</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for plane in planes %}
-            <tr>
-            <td>{{ plane.model }}</td>
-            <td>{{ plane.manufacturer }}</td>
-            <td>{{ plane.capacity }}</td>
-            <td>
-                <a href="{% url 'gestionVuelos:plane_edit' plane.pk %}" class="btn btn-sm btn-warning" title="Editar">
-                ✏️
-                </a>
-                <form action="{% url 'gestionVuelos:plane_delete' plane.pk %}" method="post" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar este avión?')">
-                    🗑️
-                </button>
-                </form>
-            </td>
-            </tr>
-        {% empty %}
-            <tr>
-            <td colspan="4">No hay aviones registrados.</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% if planes %}
+        <div class="row">
+            {% for plane in planes %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ plane.manufacturer }} - {{ plane.model }}</h5>
+                        <p class="card-text">
+                            <strong>Capacidad:</strong> {{ plane.capacity }} pasajeros<br>
+                            <strong>Matrícula:</strong> {{ plane.registration_number }}
+                        </p>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'gestionVuelos:plane_detail' plane.pk %}" class="btn btn-primary btn-sm">
+                                Ver Detalles
+                            </a>
+                            
+                            {% if user.is_staff %}
+                            <div>
+                                <a href="{% url 'gestionVuelos:plane_edit' plane.pk %}" class="btn btn-warning btn-sm me-2">
+                                    Editar
+                                </a>
+                                <a href="{% url 'gestionVuelos:plane_delete' plane.pk %}" class="btn btn-danger btn-sm">
+                                    Eliminar
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No hay aviones disponibles.</p>
+    {% endif %}
 {% endblock %}

@@ -28,25 +28,27 @@
                         <strong>Asientos Ocupados:</strong> {{ flight.seats_occupied }}<br>
                         <strong>Asientos Disponibles:</strong> {{ flight.seats_available }}
                     </p>
-                    <a href="{% url 'gestionVuelos:flight_detail' flight.id %}" class="btn btn-primary">
-                        Ver detalles
-                    </a>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{% url 'gestionVuelos:flight_detail' flight.id %}" class="btn btn-primary">
+                            Ver detalles
+                        </a>
 
-                    {% if user.is_staff %}
-                    <a href="{% url 'gestionVuelos:flight_edit' flight.pk %}" class="btn btn-warning btn-sm me-2">
-                        Editar
-                    </a>
-                    <a href="{% url 'gestionVuelos:flight_delete' flight.pk %}" class="btn btn-danger btn-sm">
-                        Eliminar
-                    </a>
-                    {% endif %}
+                        {% if user.is_staff %}
+                        <a href="{% url 'gestionVuelos:flight_edit' flight.pk %}" class="btn btn-warning">
+                            Editar
+                        </a>
+                        <a href="{% url 'gestionVuelos:flight_delete' flight.pk %}" class="btn btn-danger">
+                            Eliminar
+                        </a>
+                        {% endif %}
 
-                    {# Botón para usuarios no staff pero autenticados #}
-                    {% if user.is_authenticated and not user.is_staff %}
-                    <a href="{% url 'gestionVuelos:reservation_create' %}?flight_id={{ flight.id }}" class="btn btn-success mt-2">
-                        Reservar vuelo
-                    </a>
-                    {% endif %}
+                        {# Botón de reserva para pasajeros #}
+                        {% if user.is_authenticated and not user.is_staff %}
+                        <a href="{% url 'gestionVuelos:reservation_create' flight.id %}" class="btn btn-success">
+                            Reservar vuelo
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,5 +57,4 @@
         <p>No hay vuelos disponibles.</p>
     {% endif %}
 </div>
-
 {% endblock %}

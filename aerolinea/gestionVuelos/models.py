@@ -74,11 +74,16 @@ class Flight(models.Model):
         super().save(*args, **kwargs)
 
     def seats_occupied(self):
-        # Usa el related_name definido en Reservation: 'reservations'
         return self.reservations.filter(status='reserved').count()
 
     def seats_available(self):
         return self.plane.capacity - self.seats_occupied()
+
+    def get_available_seats(self):   #aca determinamos si esta disponible o no el asiento
+        all_seats = Seat.objects.filter(plane=self.plane, status='available')
+        reserved_seats = self.reservations.filter(status='reserved').values_list('seat_id', flat=True)
+        available_seats = all_seats.exclude(id__in=reserved_seats)
+        return available_seats
 
     def __str__(self):
         return f"{self.origin} → {self.destination} ({self.departure_time})"

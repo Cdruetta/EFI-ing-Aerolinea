@@ -133,7 +133,27 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+
 # URLs para autenticación
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = reverse_lazy('gestionVuelos:home')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
+
+import logging
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.logging import LoggingIntegration
+
+sentry_logging = LoggingIntegration(
+    level=logging.INFO,  
+    event_level=logging.ERROR  
+)
+
+sentry_sdk.init(
+    dsn="https://7872ea6b47aa0eba9beac51942a650ea@o4509805687996416.ingest.us.sentry.io/4509805727383553",
+    send_default_pii=True,
+    integrations=[
+        DjangoIntegration(), 
+        sentry_logging
+    ],
+)

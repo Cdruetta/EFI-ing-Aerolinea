@@ -21,6 +21,10 @@ from django.contrib.auth import views as auth_views
 from gestionVuelos.views import FlightCreateView
 from home.views import RegisterView, LogoutView
 
+def prueba_sentry(request):
+    sentry_sdk.capture_message("✅ Sentry funcionando en Django")
+    return HttpResponse("Mensaje enviado a Sentry")
+
 urlpatterns = [
     path('', lambda request: redirect('gestionVuelos:home'), name='root_redirect'),
     path('admin/', admin.site.urls),
@@ -28,5 +32,8 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('registro/', RegisterView.as_view(), name='registro'),
+    
 ]
+
+
 

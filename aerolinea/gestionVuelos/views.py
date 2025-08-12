@@ -1,48 +1,44 @@
 from django.urls import reverse_lazy
-from django.http import HttpRequest
-from django.contrib.auth.models import User, AbstractBaseUser
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import TemplateView, ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.shortcuts import redirect
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, ListView
+from django.db.models import Q
 
-from gestionVuelos.models import Passenger, Flight, Plane, Reservation
+from gestionVuelos.models import Passenger, Flight, Plane, Reservation, Seat, Reservation
 from gestionVuelos.forms import FlightForm, PassengerForm, PlaneForm
 
-# Mixin para restringir acceso a staff o superusuario
 class StaffRequiredMixin(UserPassesTestMixin):
-    request: HttpRequest
-    raise_exception = True  
+    """Mixin para restringir acceso a staff o superusuarios"""
+    raise_exception = True
 
     def test_func(self):
-        user = self.request.user  
-        return user.is_authenticated and (user.is_staff or user.is_superuser)
+        return self.request.user.is_authenticated and (self.request.user.is_staff or self.request.user.is_superuser)
 
 class HomeView(TemplateView):
     template_name = "home.html"
 
-
 # --- Pasajeros ---
-class PassengerListView(LoginRequiredMixin, StaffRequiredMixin,  ListView):
+class PassengerListView(LoginRequiredMixin, StaffRequiredMixin, ListView):
     model = Passenger
     template_name = "passenger/list.html"
     context_object_name = "passengers"
     login_url = '/login/'
 
-class PassengerDetailView(LoginRequiredMixin, StaffRequiredMixin,  DetailView):
+class PassengerDetailView(LoginRequiredMixin, StaffRequiredMixin, DetailView):
     model = Passenger
     template_name = "passenger/detail.html"
     context_object_name = "passenger"
     login_url = '/login/'
 
-class PassengerCreateView(LoginRequiredMixin, StaffRequiredMixin,  CreateView):
+class PassengerCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
     model = Passenger
     form_class = PassengerForm
     template_name = "passenger/create.html"
     success_url = reverse_lazy("gestionVuelos:passenger_list")
     login_url = '/login/'
 
-class PassengerUpdateView(LoginRequiredMixin, StaffRequiredMixin,  UpdateView):
+class PassengerUpdateView(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
     model = Passenger
     form_class = PassengerForm
     template_name = "passenger/edit.html"
@@ -57,13 +53,13 @@ class PassengerDeleteView(StaffRequiredMixin, LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("gestionVuelos:passenger_list")
     login_url = '/login/'
 
-
 # --- Vuelos ---
 class FlightListView(LoginRequiredMixin, ListView):
     model = Flight
     template_name = "flights/list.html"
     context_object_name = "flights"
     login_url = '/login/'
+    paginate_by = 10
 
 class FlightDetailView(LoginRequiredMixin, DetailView):
     model = Flight
@@ -73,7 +69,14 @@ class FlightDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["passenger_id"] = self.request.GET.get("passenger_id")
+        available_seats = self.get_object().get_available_seats()
+        context["available_seats"] = available_seats
+        
+        if not available_seats.exists():
+            context['mensaje'] = "No hay asientos disponibles para este vuelo."
+        else:
+            context['mensaje'] = f"Hay {available_seats.count()} asientos disponibles."
+        
         return context
 
 class FlightCreateView(StaffRequiredMixin, LoginRequiredMixin, CreateView):
@@ -97,7 +100,6 @@ class FlightDeleteView(StaffRequiredMixin, LoginRequiredMixin, DeleteView):
     template_name = "flights/delete_confirm.html"
     success_url = reverse_lazy("gestionVuelos:flight_list")
     login_url = '/login/'
-
 
 # --- Planes ---
 class PlaneListView(StaffRequiredMixin, LoginRequiredMixin, ListView):
@@ -126,37 +128,93 @@ class PlaneUpdateView(StaffRequiredMixin, LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("gestionVuelos:plane_list")
     login_url = '/login/'
 
-    
-
 class PlaneDeleteView(StaffRequiredMixin, LoginRequiredMixin, DeleteView):
     model = Plane
     template_name = "planes/plane_confirm_delete.html"
     success_url = reverse_lazy("gestionVuelos:plane_list")
     login_url = '/login/'
 
-
-# --- Reservas (para que pasajero pueda reservar un vuelo) ---
+# --- Reservas ---
 class ReservationCreateView(LoginRequiredMixin, CreateView):
     model = Reservation
-    fields = ['flight', 'seat']
+    fields = []  # No usamos fields porque manejamos el asiento manualmente
     template_name = "reservations/create.html"
-    success_url = reverse_lazy("gestionVuelos:flight_list")
     login_url = '/login/'
 
-    def form_valid(self, form):
+    def get_success_url(self):
+        # Usamos self.reservation que guardamos en post()
+        return reverse_lazy("gestionVuelos:reservation_detail", kwargs={"pk": self.reservation.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        flight = get_object_or_404(Flight, pk=self.kwargs['flight_id'])
+        
+        available_seats = Seat.objects.filter(
+            plane=flight.plane,
+            status="available"
+        ).order_by('row', 'column')
+
+        seat_rows = {}
+        for seat in available_seats:
+            seat_rows.setdefault(seat.row, []).append(seat)
+        
+        context['flight'] = flight
+        context['seat_rows'] = seat_rows
+        context['seat_types'] = dict(Seat.SEAT_STATUS_CHOICES) if hasattr(Seat, 'SEAT_STATUS_CHOICES') else {}
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        flight = get_object_or_404(Flight, pk=self.kwargs['flight_id'])
+        passenger = get_object_or_404(Passenger, user=self.request.user)
+        seat_id = request.POST.get('seat')
+
+        if not seat_id:
+            messages.error(request, "Debe seleccionar un asiento")
+            return redirect(self.request.path)
+
         try:
-            passenger = Passenger.objects.get(user=self.request.user)
-        except Passenger.DoesNotExist:
-            # Redirigir a crear pasajero si no existe
-            return redirect('gestionVuelos:passenger_create')
+            seat = Seat.objects.get(
+                pk=seat_id,
+                plane=flight.plane,
+                status="available"
+            )
+        except Seat.DoesNotExist:
+            messages.error(request, "El asiento seleccionado no está disponible")
+            return redirect(self.request.path)
 
-        # Asignar pasajero y estado
-        form.instance.passenger = passenger
-        form.instance.status = 'reserved'
+        try:
+            self.reservation = Reservation.objects.create(
+                flight=flight,
+                passenger=passenger,
+                seat=seat,
+                status='reserved',
+                price=flight.base_price,
+            )
+        except Exception as e:
+            messages.error(request, f"No se pudo crear la reserva: {e}")
+            return redirect(self.request.path)
 
-        # Validar que el asiento pertenezca al avión del vuelo
-        if form.instance.seat.plane != form.instance.flight.plane:
-            form.add_error('seat', 'El asiento no pertenece al avión del vuelo.')
-            return self.form_invalid(form)
+        seat.status = "reserved"
+        seat.save()
 
-        return super().form_valid(form)
+        messages.success(request, "Reserva realizada con éxito!")
+        return redirect(self.get_success_url())
+
+
+
+class ReservationDetailView(LoginRequiredMixin, DetailView):
+    model = Reservation
+    template_name = "reservations/detail.html"
+    context_object_name = "reservation"
+    login_url = '/login/'
+
+class MyReservationsListView(LoginRequiredMixin, ListView):
+    model = Reservation
+    template_name = "reservations/my_reservations.html"
+    context_object_name = "reservations"
+    login_url = '/login/'
+
+    def get_queryset(self):
+        
+        return Reservation.objects.filter(passenger__user=self.request.user, status='reserved')

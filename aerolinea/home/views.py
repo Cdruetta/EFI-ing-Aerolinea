@@ -9,12 +9,17 @@ from django.utils.translation import gettext as _
 
 from home.forms import LoginForm, RegisterForm
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 class HomeView(View):
     def get(self, request):
+        logger.error("Ingresando a view")
         return render(request, "index.html")
 
     def post(self, request):
+
         return render(request, "index.html")
 
 
@@ -26,6 +31,7 @@ def _validate_pass(pass1, pass2):
 
 class LoginView(View):
     def get(self, request):
+        logger.error("Login user")
         form = LoginForm()
         return render(request, "accounts/login.html", {"form": form})
 
@@ -55,6 +61,7 @@ class LogoutView(View):
 
 class RegisterView(View):
     def get(self, request):
+        logger.error("Registro user")
         form = RegisterForm()
         return render(request, "accounts/register.html", {"form": form})
 

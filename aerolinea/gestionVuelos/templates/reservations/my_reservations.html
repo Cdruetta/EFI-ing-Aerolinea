@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Mis vuelos</h2>
+<ul>
+    {% for reservation in reservations %}
+        <li>
+        <a href="{% url 'gestionVuelos:reservation_detail' reservation.pk %}">
+            Vuelo: {{ reservation.flight.origin }} → {{ reservation.flight.destination }} | 
+            Fecha: {{ reservation.flight.departure_time|date:"d/m/Y H:i" }} | 
+            Asiento: {{ reservation.seat.number }}
+        </a>
+        </li>
+    {% empty %}
+        <li>No tenés reservas.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

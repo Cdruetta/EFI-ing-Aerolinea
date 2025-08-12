@@ -1,9 +1,143 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-    <h2>Reservar un vuelo</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Reservar</button>
-    </form>
+<div class="container mt-4">
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3>Reservar Vuelo: {{ flight.origin }} → {{ flight.destination }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Fecha:</strong> {{ flight.departure_time|date:"d/m/Y" }}</p>
+                    <p><strong>Hora:</strong> {{ flight.departure_time|time:"H:i" }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Avión:</strong> {{ flight.plane.model }}</p>
+                    <p><strong>Matrícula:</strong> {{ flight.plane.registration_number }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <h4>Selección de Asientos</h4>
+        </div>
+        <div class="card-body">
+            {% if seat_rows %}
+            <div class="text-center mb-4">
+                <div class="cockpit" style="background-color: #333; color: white; padding: 10px; margin-bottom: 20px;">
+                    <h5>🏁 Cabina de Pilotos</h5>
+                </div>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="airplane-layout">
+                    {% for row, seats in seat_rows.items %}
+                    <div class="seat-row mb-3">
+                        <div class="row-number">{{ row }}</div>
+                        {% for seat in seats %}
+                        <div class="seat-container">
+                            <input type="radio" name="seat" value="{{ seat.id }}" id="seat-{{ seat.id }}" class="seat-radio">
+                            <label for="seat-{{ seat.id }}" class="seat-label 
+                                {% if seat.seat_type == 'window' %}window-seat{% endif %}
+                                {% if seat.seat_type == 'aisle' %}aisle-seat{% endif %}
+                                {% if seat.seat_type == 'middle' %}middle-seat{% endif %}">
+                                {{ seat.column }}
+                                {% if seat.seat_type == 'window' %}<i class="fas fa-window-maximize"></i>{% endif %}
+                                {% if seat.seat_type == 'aisle' %}<i class="fas fa-arrows-alt-h"></i>{% endif %}
+                            </label>
+                        </div>
+                        {% if forloop.counter == 2 %} {# Separador de pasillo #}
+                        <div class="aisle-space"></div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="fas fa-check-circle"></i> Confirmar Reserva
+                    </button>
+                </div>
+            </form>
+            {% else %}
+            <div class="alert alert-warning">
+                No hay asientos disponibles para este vuelo.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .airplane-layout {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    .seat-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
+    
+    .row-number {
+        width: 30px;
+        text-align: center;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    
+    .seat-radio {
+        display: none;
+    }
+    
+    .seat-label {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        background-color: #e9ecef;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .seat-radio:checked + .seat-label {
+        background-color: #28a745;
+        color: white;
+        transform: scale(1.1);
+    }
+    
+    .seat-label:hover {
+        background-color: #ced4da;
+    }
+    
+    .window-seat {
+        border-left: 3px solid #007bff;
+    }
+    
+    .aisle-seat {
+        border-right: 3px solid #fd7e14;
+    }
+    
+    .middle-seat {
+        background-color: #f8f9fa;
+    }
+    
+    .aisle-space {
+        width: 40px;
+    }
+    
+    .cockpit {
+        border-radius: 10px;
+    }
+</style>
 {% endblock %}
