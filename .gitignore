@@ -2,6 +2,7 @@
 env/
 .env
 .env/
+<<<<<<< HEAD
 
 # Python bytecode y caches
 **/__pycache__/
@@ -35,3 +36,10 @@ Thumbs.db
 import_passengers.py
 import_flights.py
 export_passengers_by_flight.py
+=======
+*/__pycache__
+*/.pyc
+*/.pyo
+*/.egg-info
+*/.git
+>>>>>>> c6c9f7a (saque de ignore la db)
