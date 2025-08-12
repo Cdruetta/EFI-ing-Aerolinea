@@ -47,17 +47,28 @@ venv\Scripts\activate
 
 
 
+
+
+
+
 # ⚙️ Instalar dependencias
 pip install -r requirements.txt
+
 
 # 🗄️ Aplicar migraciones de la base de datos
 python manage.py migrate
 
+
 # 👤 Crear un superusuario para acceder al panel administrativo
 python manage.py createsuperuser
 
+
 # 🚀 Iniciar el servidor de desarrollo
 python manage.py runserver
+
+
+
+
 
 
 
@@ -71,8 +82,13 @@ http://localhost:8000/admin/
 
 
 
+
+
+
+
 📸 Capturas de pantalla
 (Aquí puedes agregar imágenes o GIFs que muestren las funcionalidades principales del sistema para facilitar la comprensión visual.)
+
 
 
 
@@ -81,26 +97,51 @@ http://localhost:8000/admin/
 
 
 
+
 🍴 Haz un fork del repositorio.
+
+
+
 
 🌿 Crea una rama para tu feature:  
 git checkout -b feature/nueva-funcionalidad
 
+
+
+
 📝 Realiza commits claros y descriptivos.
+
+
+
 
 📤 Haz push a tu rama:  
 git push origin feature/nueva-funcionalidad
 
+
+
+
 🔃 Abre un Pull Request explicando los cambios realizados.
+
+
+
 
 📝 Licencia
 Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
 
 
+
+
+
+
 🙍‍♂️ Autor
 Cristian Eduardo Druetta
-
 📧 Correo: c.druetta@itecriocuarto.org.ar
+
+
+
+
+
+
 
 
 📄 LICENSE
