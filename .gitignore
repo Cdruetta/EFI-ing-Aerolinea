@@ -1,9 +1,37 @@
-.env
+# Entornos virtuales y variables de entorno
 env/
+.env
 .env/
-*/__pycache__
-*/.pyc
-*/.pyo
-*/.egg-info
-*/.git
+
+# Python bytecode y caches
+**/__pycache__/
+**/*.py[cod]
+**/*.pyo
+**/*.egg-info/
+
+# Django base de datos local
 db.sqlite3
+db postgresql/
+
+# Archivos y carpetas estáticas compiladas
+staticfiles/
+static/
+
+# Logs
+*.log
+
+# IDEs y editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+
+# Archivos de importación y exportación CSV (scripts auxiliares)
+import_passengers.py
+import_flights.py
+export_passengers_by_flight.py
