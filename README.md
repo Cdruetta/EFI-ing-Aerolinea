@@ -4,6 +4,7 @@ Sistema web de gestión para una aerolínea, desarrollado en **Django** con **Bo
 Incluye autenticación de usuarios y una interfaz responsiva y moderna.
 
 ## 🚀 Características
+
 - Gestión completa de **vuelos**, **pasajeros**, **reservas** y **aviones**.
 - Generación de **tickets** y **reportes**.
 - Sistema de **login, registro y logout**.
@@ -11,6 +12,7 @@ Incluye autenticación de usuarios y una interfaz responsiva y moderna.
 - Panel de administración de Django para gestión avanzada.
 
 ## 🛠️ Tecnologías utilizadas
+
 - [Python 3.x](https://www.python.org/)
 - [Django](https://www.djangoproject.com/)
 - [Bootstrap 5](https://getbootstrap.com/)
@@ -19,46 +21,96 @@ Incluye autenticación de usuarios y una interfaz responsiva y moderna.
 
 ## 📦 Instalación
 
-1. **Clonar el repositorio**
+1. Clonar el repositorio
    ```bash
    git clone git@github.com:Cdruetta/EFI-ing-Aerolinea.git
    cd EFI-ing-Aerolinea
-   ```
+Crear y activar entorno virtual
 
-2. **Crear y activar entorno virtual**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # En Linux/Mac
-   venv\Scripts\activate     # En Windows
-   ```
+bash
+Copiar
+Editar
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
+Instalar dependencias
 
-3. **Instalar dependencias**
-   ```bash
-   pip install -r requirements.txt
-   ```
+bash
+Copiar
+Editar
+pip install -r requirements.txt
+Aplicar migraciones a la base de datos
 
-4. **Configurar base de datos**
-   ```bash
-   python manage.py migrate
-   ```
+bash
+Copiar
+Editar
+python manage.py migrate
+Crear superusuario
 
-5. **Crear superusuario**
-   ```bash
-   python manage.py createsuperuser
-   ```
+bash
+Copiar
+Editar
+python manage.py createsuperuser
+Iniciar el servidor
 
-6. **Iniciar el servidor**
-   ```bash
-   python manage.py runserver
-   ```
+bash
+Copiar
+Editar
+python manage.py runserver
+💻 Uso
+Acceder a la interfaz: http://localhost:8000/
 
-## 💻 Uso
-- Accede a `http://localhost:8000/` para usar la interfaz.
-- Accede a `http://localhost:8000/admin/` para el panel administrativo.
+Acceder al panel administrativo: http://localhost:8000/admin/
 
-## 📸 Capturas de pantalla
-*(Agrega aquí imágenes de las vistas más importantes)*
+📸 Capturas de pantalla
+(Agrega aquí imágenes de las vistas más importantes para mejor presentación)
 
-## 📜 Licencia
-Este proyecto está bajo la licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
-# EFI-ing-Aerolinea
+🤝 Contribuciones
+Las contribuciones son bienvenidas. Para contribuir, por favor:
+
+Haz un fork del repositorio.
+
+Crea una rama con tu feature (git checkout -b feature/nueva-funcionalidad).
+
+Realiza commits claros y descriptivos.
+
+Haz push a tu rama.
+
+Abre un Pull Request describiendo tus cambios.
+
+📝 Licencia
+Este proyecto está bajo la licencia MIT - ver el archivo LICENSE para más detalles.
+
+Autor: Cristian Eduardo Druetta
+Contacto: c.druetta@itecriocuarto.org.ar
+
+sql
+Copiar
+Editar
+
+---
+
+**LICENSE**
+
+```text
+MIT License
+
+Copyright (c) 2025 Cristian Eduardo Druetta
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
