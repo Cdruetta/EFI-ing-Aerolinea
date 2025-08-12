@@ -1,98 +1,113 @@
 # ✈️ Gestión Vuelos
 
-Sistema web de gestión para una aerolínea, desarrollado en **Django** con **Bootstrap 5**, que permite administrar vuelos, pasajeros, reservas, aviones, tickets y reportes.  
-Incluye autenticación de usuarios y una interfaz responsiva y moderna.
+Sistema web para la gestión integral de una aerolínea, desarrollado con **Django** y **Bootstrap 5**. Permite administrar vuelos, pasajeros, reservas, aviones, tickets y reportes, incluyendo un sistema completo de autenticación de usuarios y una interfaz moderna y responsiva.
 
-## 🚀 Características
+---
 
-- Gestión completa de **vuelos**, **pasajeros**, **reservas** y **aviones**.
-- Generación de **tickets** y **reportes**.
-- Sistema de **login, registro y logout**.
-- Interfaz responsiva con **Bootstrap 5**.
-- Panel de administración de Django para gestión avanzada.
+## 🚀 Características principales
+
+- Gestión completa de **vuelos**, **pasajeros**, **reservas** y **aviones**.  
+- Emisión de **tickets** y generación de **reportes** detallados.  
+- Sistema de **registro, login y logout** para usuarios.  
+- Interfaz responsiva y atractiva basada en **Bootstrap 5**.  
+- Acceso al panel de administración estándar de Django para gestión avanzada.  
+
+---
 
 ## 🛠️ Tecnologías utilizadas
 
-- [Python 3.x](https://www.python.org/)
-- [Django](https://www.djangoproject.com/)
-- [Bootstrap 5](https://getbootstrap.com/)
-- [SQLite / PostgreSQL](https://www.postgresql.org/)
-- HTML5, CSS3 y JavaScript
+- [Python 3.x](https://www.python.org/)  
+- [Django](https://www.djangoproject.com/)  
+- [Bootstrap 5](https://getbootstrap.com/)  
+- Base de datos: [SQLite](https://www.sqlite.org/) por defecto / opción para PostgreSQL  
+- Frontend: HTML5, CSS3, JavaScript  
 
-## 📦 Instalación
+---
 
-1. Clonar el repositorio
+## 📦 Instalación y puesta en marcha
+
+1. Clonar el repositorio:
+
    ```bash
    git clone git@github.com:Cdruetta/EFI-ing-Aerolinea.git
    cd EFI-ing-Aerolinea
-Crear y activar entorno virtual
+Crear y activar un entorno virtual:
 
 bash
 Copiar
 Editar
 python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
-Instalar dependencias
+# Linux / Mac
+source venv/bin/activate
+# Windows
+venv\Scripts\activate
+Instalar las dependencias:
 
 bash
 Copiar
 Editar
 pip install -r requirements.txt
-Aplicar migraciones a la base de datos
+Aplicar las migraciones de la base de datos:
 
 bash
 Copiar
 Editar
 python manage.py migrate
-Crear superusuario
+Crear un superusuario para acceder al panel administrativo:
 
 bash
 Copiar
 Editar
 python manage.py createsuperuser
-Iniciar el servidor
+Iniciar el servidor de desarrollo:
 
 bash
 Copiar
 Editar
 python manage.py runserver
 💻 Uso
-Acceder a la interfaz: http://localhost:8000/
+Accede a la aplicación web en:
+http://localhost:8000/
 
-Acceder al panel administrativo: http://localhost:8000/admin/
+Accede al panel administrativo de Django:
+http://localhost:8000/admin/
 
 📸 Capturas de pantalla
-(Agrega aquí imágenes de las vistas más importantes para mejor presentación)
+(Aquí puedes agregar imágenes o GIFs que muestren las funcionalidades principales del sistema para facilitar la comprensión visual.)
 
 🤝 Contribuciones
-Las contribuciones son bienvenidas. Para contribuir, por favor:
+¡Las contribuciones son bienvenidas! Para colaborar:
 
 Haz un fork del repositorio.
 
-Crea una rama con tu feature (git checkout -b feature/nueva-funcionalidad).
+Crea una rama para tu feature:
 
-Realiza commits claros y descriptivos.
-
-Haz push a tu rama.
-
-Abre un Pull Request describiendo tus cambios.
-
-📝 Licencia
-Este proyecto está bajo la licencia MIT - ver el archivo LICENSE para más detalles.
-
-Autor: Cristian Eduardo Druetta
-Contacto: c.druetta@itecriocuarto.org.ar
-
-sql
+bash
 Copiar
 Editar
+git checkout -b feature/nueva-funcionalidad
+Realiza commits claros y descriptivos.
 
----
+Haz push a tu rama:
 
-**LICENSE**
+bash
+Copiar
+Editar
+git push origin feature/nueva-funcionalidad
+Abre un Pull Request explicando los cambios realizados.
 
-```text
+📝 Licencia
+Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
+
+Autor
+Cristian Eduardo Druetta
+Correo: c.druetta@itecriocuarto.org.ar
+
+LICENSE
+
+text
+Copiar
+Editar
 MIT License
 
 Copyright (c) 2025 Cristian Eduardo Druetta
