@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-12 00:40-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
+#: home/templates/base.html:8
+msgid "Aero Gestión Vuelos"
+msgstr "Aero Gestión de Vuelos"
+
+#: home/templates/base.html:26
+msgid "Aerolínea GCSoft"
+msgstr "Aerolínea GCSoft"
+
+#: home/templates/base.html:30
+msgid "Toggle navigation"
+msgstr "Alternar navegación"
+
+#: home/templates/base.html:36
+msgid "Vuelos"
+msgstr "Vuelos"
+
+#: home/templates/base.html:39
+msgid "Aviones"
+msgstr "Aviones"
+
+#: home/templates/base.html:40
+msgid "Pasajeros"
+msgstr "Pasajeros"
+
+#: home/templates/base.html:41
+msgid "Admin"
+msgstr "Administración"
+
+#: home/templates/base.html:46
+msgid "Mis vuelos"
+msgstr "Mis vuelos"
+
+#: home/templates/base.html:54
+msgid "Hola,"
+msgstr "Hola,"
+
+#: home/templates/base.html:57
+msgid "Cerrar sesión"
+msgstr "Cerrar sesión"
+
+#: home/templates/base.html:61
+msgid "Iniciar sesión"
+msgstr "Iniciar sesión"
+
+#: home/templates/base.html:64
+msgid "Registrarse"
+msgstr "Registrarse"
+
+#: home/templates/base.html:75
+msgid "La plataforma líder en gestión y administración de vuelos"
+msgstr "La plataforma líder en gestión y administración de vuelos"
+
+#: home/templates/base.html:85
+msgid "Cerrar"
+msgstr "Cerrar"
+
+#: home/templates/base.html:99
+msgid "Aerolínea GCSoft. Todos los derechos reservados."
+msgstr "Aerolínea GCSoft. Todos los derechos reservados."

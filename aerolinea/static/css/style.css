@@ -142,3 +142,20 @@
             transform: scale(1.1);
             box-shadow: 0 0 8px #2980B9cc;
         }
+        /* Botón idioma más discreto */
+        .btn-language {
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+            padding: 4px 8px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-language:hover {
+            background-color: #3498DB;
+            border-color: #3498DB;
+            color: #fff;
+            transform: scale(1.05);
+        }
