@@ -27,87 +27,83 @@ Sistema web para la gestión integral de una aerolínea, desarrollado con **Djan
 ## 📦 Instalación y puesta en marcha
 
 1. Clonar el repositorio:
-
-   ```bash
    git clone git@github.com:Cdruetta/EFI-ing-Aerolinea.git
-   cd EFI-ing-Aerolinea
+
+
+cd EFI-ing-Aerolinea
+
+
 Crear y activar un entorno virtual:
-
-bash
-Copiar
-Editar
 python -m venv venv
-# Linux / Mac
+
+# 🐧 Linux  
 source venv/bin/activate
-# Windows
+
+# 🍎 macOS
+source venv/bin/activate
+
+# 🪟 Windows
 venv\Scripts\activate
-Instalar las dependencias:
 
-bash
-Copiar
-Editar
+
+
+# ⚙️ Instalar dependencias
 pip install -r requirements.txt
-Aplicar las migraciones de la base de datos:
 
-bash
-Copiar
-Editar
+# 🗄️ Aplicar migraciones de la base de datos
 python manage.py migrate
-Crear un superusuario para acceder al panel administrativo:
 
-bash
-Copiar
-Editar
+# 👤 Crear un superusuario para acceder al panel administrativo
 python manage.py createsuperuser
-Iniciar el servidor de desarrollo:
 
-bash
-Copiar
-Editar
+# 🚀 Iniciar el servidor de desarrollo
 python manage.py runserver
+
+
+
 💻 Uso
 Accede a la aplicación web en:
 http://localhost:8000/
 
+
 Accede al panel administrativo de Django:
 http://localhost:8000/admin/
+
+
 
 📸 Capturas de pantalla
 (Aquí puedes agregar imágenes o GIFs que muestren las funcionalidades principales del sistema para facilitar la comprensión visual.)
 
+
+
 🤝 Contribuciones
 ¡Las contribuciones son bienvenidas! Para colaborar:
 
-Haz un fork del repositorio.
 
-Crea una rama para tu feature:
 
-bash
-Copiar
-Editar
+🍴 Haz un fork del repositorio.
+
+🌿 Crea una rama para tu feature:  
 git checkout -b feature/nueva-funcionalidad
-Realiza commits claros y descriptivos.
 
-Haz push a tu rama:
+📝 Realiza commits claros y descriptivos.
 
-bash
-Copiar
-Editar
+📤 Haz push a tu rama:  
 git push origin feature/nueva-funcionalidad
-Abre un Pull Request explicando los cambios realizados.
+
+🔃 Abre un Pull Request explicando los cambios realizados.
 
 📝 Licencia
 Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
 
-Autor
+
+🙍‍♂️ Autor
 Cristian Eduardo Druetta
-Correo: c.druetta@itecriocuarto.org.ar
 
-LICENSE
+📧 Correo: c.druetta@itecriocuarto.org.ar
 
-text
-Copiar
-Editar
+
+📄 LICENSE
 MIT License
 
 Copyright (c) 2025 Cristian Eduardo Druetta
