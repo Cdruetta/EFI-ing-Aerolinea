@@ -82,12 +82,6 @@ python manage.py runserver
 
 ---
 
-## 📸 Capturas de pantalla
-
-*(Aquí puedes agregar imágenes o GIFs que muestren las funcionalidades principales del sistema para facilitar la comprensión visual.)*
-
----
-
 ## 🤝 Contribuciones
 
 - 🍴 Haz un fork del repositorio.  
