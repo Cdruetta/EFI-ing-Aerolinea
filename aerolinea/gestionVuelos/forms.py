@@ -1,6 +1,7 @@
 from django import forms
 from .models import Flight, Passenger, Plane, Reservation
 
+
 class FlightForm(forms.ModelForm):
     class Meta:
         model = Flight
@@ -18,12 +19,19 @@ class FlightForm(forms.ModelForm):
             "plane": forms.Select(attrs={"class": "form-select"}),
             "origin": forms.TextInput(attrs={"class": "form-control"}),
             "destination": forms.TextInput(attrs={"class": "form-control"}),
-            "departure_time": forms.DateTimeInput(attrs={"class": "form-control", "type": "datetime-local"}),
-            "arrival_time": forms.DateTimeInput(attrs={"class": "form-control", "type": "datetime-local"}),
-            "duration": forms.TextInput(attrs={"class": "form-control", "placeholder": "hh:mm:ss"}),
+            "departure_time": forms.DateTimeInput(
+                attrs={"class": "form-control", "type": "datetime-local"}
+            ),
+            "arrival_time": forms.DateTimeInput(
+                attrs={"class": "form-control", "type": "datetime-local"}
+            ),
+            "duration": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "hh:mm:ss"}
+            ),
             "status": forms.TextInput(attrs={"class": "form-control"}),
             "base_price": forms.NumberInput(attrs={"class": "form-control"}),
         }
+
 
 class PassengerForm(forms.ModelForm):
     class Meta:
@@ -42,8 +50,11 @@ class PassengerForm(forms.ModelForm):
             "document_number": forms.TextInput(attrs={"class": "form-control"}),
             "email": forms.EmailInput(attrs={"class": "form-control"}),
             "phone": forms.TextInput(attrs={"class": "form-control"}),
-            "birth_date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
+            "birth_date": forms.DateInput(
+                attrs={"class": "form-control", "type": "date"}
+            ),
         }
+
 
 class PlaneForm(forms.ModelForm):
     class Meta:
@@ -59,10 +70,11 @@ class PlaneForm(forms.ModelForm):
             "capacity": forms.NumberInput(attrs={"class": "form-control"}),
         }
 
+
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
-        fields = ['flight']
+        fields = ["flight"]
         widgets = {
-            'flight': forms.HiddenInput(),
+            "flight": forms.HiddenInput(),
         }

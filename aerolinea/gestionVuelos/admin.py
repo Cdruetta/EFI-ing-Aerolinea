@@ -11,7 +11,8 @@ class PlaneAdmin(admin.ModelAdmin):
     search_fields = ("model",)
 
     def available_seats(self, obj):
-        return obj.seat_set.filter(status='available').count()
+        return obj.seat_set.filter(status="available").count()
+
     available_seats.short_description = "Available Seats"
 
 

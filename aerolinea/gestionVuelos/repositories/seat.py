@@ -27,7 +27,7 @@ class SeatRepository:
         column: str,
         seat_type: str,
         status: str,
-        plane
+        plane,
     ) -> Seat:
         seat.number = number
         seat.row = row
@@ -37,7 +37,6 @@ class SeatRepository:
         seat.plane = plane
         seat.save()
         return seat
-
 
     @staticmethod
     def delete(seat_id: int) -> bool:

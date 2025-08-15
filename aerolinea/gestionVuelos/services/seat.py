@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from gestionVuelos.models import Seat, Plane
 from gestionVuelos.repositories.seat import SeatRepository
 
+
 class SeatService:
 
     @staticmethod
@@ -20,7 +21,7 @@ class SeatService:
         row: int,
         column: str,
         seat_type: str,
-        status: str = 'available'
+        status: str = "available",
     ) -> Seat:
         plane = get_object_or_404(Plane, id=plane_id)
         seat = Seat(
@@ -29,7 +30,7 @@ class SeatService:
             row=row,
             column=column,
             seat_type=seat_type,
-            status=status
+            status=status,
         )
         seat.full_clean()
         seat.save()
@@ -43,7 +44,7 @@ class SeatService:
         row: int,
         column: str,
         seat_type: str,
-        status: str
+        status: str,
     ) -> bool:
         try:
             seat = SeatRepository.get_by_id(seat_id)

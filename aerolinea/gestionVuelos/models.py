@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 import uuid
 
+
 class Plane(models.Model):
     model = models.CharField(max_length=30)
     manufacturer = models.CharField(max_length=100)
@@ -74,14 +75,18 @@ class Flight(models.Model):
         super().save(*args, **kwargs)
 
     def seats_occupied(self):
-        return self.reservations.filter(status='reserved').count()
+        return self.reservations.filter(status="reserved").count()
 
     def seats_available(self):
         return self.plane.capacity - self.seats_occupied()
 
-    def get_available_seats(self):   #aca determinamos si esta disponible o no el asiento
-        all_seats = Seat.objects.filter(plane=self.plane, status='available')
-        reserved_seats = self.reservations.filter(status='reserved').values_list('seat_id', flat=True)
+    def get_available_seats(
+        self,
+    ):  # aca determinamos si esta disponible o no el asiento
+        all_seats = Seat.objects.filter(plane=self.plane, status="available")
+        reserved_seats = self.reservations.filter(status="reserved").values_list(
+            "seat_id", flat=True
+        )
         available_seats = all_seats.exclude(id__in=reserved_seats)
         return available_seats
 
@@ -95,7 +100,9 @@ class Reservation(models.Model):
         ("cancelled", "Cancelled"),
     ]
 
-    flight = models.ForeignKey(Flight, on_delete=models.CASCADE, related_name='reservations')
+    flight = models.ForeignKey(
+        Flight, on_delete=models.CASCADE, related_name="reservations"
+    )
     passenger = models.ForeignKey(Passenger, on_delete=models.CASCADE)
     seat = models.OneToOneField(Seat, on_delete=models.CASCADE)
     status = models.CharField(

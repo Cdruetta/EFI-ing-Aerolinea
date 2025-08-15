@@ -1,5 +1,6 @@
 from gestionVuelos.models import Seat
 
+
 def crear_asientos_para_avion(plane):
     capacity = plane.capacity
     seat_columns = ["A", "B", "C", "D", "E", "F"]

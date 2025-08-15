@@ -14,10 +14,10 @@ class PassengerService:
 
     @staticmethod
     def get_all_with_reservations() -> List[Passenger]:
-        reservations_with_flights = Reservation.objects.select_related('flight')
+        reservations_with_flights = Reservation.objects.select_related("flight")
         return list(
             Passenger.objects.prefetch_related(
-                Prefetch('reservation_set', queryset=reservations_with_flights)
+                Prefetch("reservation_set", queryset=reservations_with_flights)
             ).all()
         )
 
@@ -32,7 +32,7 @@ class PassengerService:
         email: str,
         phone: str,
         birth_date,
-        document_type: str
+        document_type: str,
     ) -> Passenger:
         passenger = Passenger(
             full_name=full_name,
@@ -40,7 +40,7 @@ class PassengerService:
             email=email,
             phone=phone,
             birth_date=birth_date,
-            document_type=document_type
+            document_type=document_type,
         )
         passenger.full_clean()
         passenger.save()
@@ -54,7 +54,7 @@ class PassengerService:
         email: str,
         phone: str,
         birth_date,
-        document_type: str
+        document_type: str,
     ) -> bool:
         try:
             passenger = PassengerRepository.get_by_id(passenger_id)

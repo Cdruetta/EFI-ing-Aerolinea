@@ -14,11 +14,11 @@ class ReservationService:
     def get_all(self) -> List[Reservation]:
         return list(Reservation.objects.all())
     """
-    
+
     @staticmethod
     def get_all():
         return list(ReservationRepository.get_all())
-    
+
     @staticmethod
     def delete(reservation_id: int) -> bool:
         reservation = ReservationRepository.get_by_id(reservation_id=reservation_id)
@@ -35,26 +35,25 @@ class ReservationService:
         seat_id: int,
         status: str,
         price: float,
-        reservation_code: str
+        reservation_code: str,
     ) -> bool:
         try:
             reservation = ReservationRepository.get_by_id(reservation_id)
             if not reservation:
                 return False
-            
+
             flight = get_object_or_404(Flight, id=flight_id)
             passenger = get_object_or_404(Passenger, id=passenger_id)
             seat = get_object_or_404(Seat, id=seat_id)
-            
+
             reservation.flight = flight
             reservation.passenger = passenger
             reservation.seat = seat
             reservation.status = status
             reservation.price = price
             reservation.reservation_code = reservation_code
-            
+
             reservation.save()
             return True
         except Reservation.DoesNotExist:
             return False
-            

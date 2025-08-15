@@ -4,10 +4,11 @@ from gestionVuelos.models import Ticket
 from datetime import datetime
 import uuid
 
+
 class TicketRepository:
     @staticmethod
     def get_all() -> list[Ticket]:
-        return list(Ticket.objects.all())  
+        return list(Ticket.objects.all())
 
     @staticmethod
     def get_by_id(ticket_id: int) -> Ticket:

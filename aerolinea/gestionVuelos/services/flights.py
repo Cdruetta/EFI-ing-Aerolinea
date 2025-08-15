@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from gestionVuelos.models import Flight, Plane
 from gestionVuelos.repositories.flights import FlightRepository
 
+
 class FlightService:
 
     @staticmethod
@@ -23,7 +24,7 @@ class FlightService:
         arrival_time,
         duration,
         status: str,
-        base_price: float
+        base_price: float,
     ) -> Flight:
         plane = get_object_or_404(Plane, id=plane_id)
         flight = Flight(
@@ -34,7 +35,7 @@ class FlightService:
             arrival_time=arrival_time,
             duration=duration,
             status=status,
-            base_price=base_price
+            base_price=base_price,
         )
         flight.full_clean()
         flight.save()
@@ -50,7 +51,7 @@ class FlightService:
         arrival_time,
         duration,
         status: str,
-        base_price: float
+        base_price: float,
     ) -> bool:
         try:
             flight = FlightRepository.get_by_id(flight_id)

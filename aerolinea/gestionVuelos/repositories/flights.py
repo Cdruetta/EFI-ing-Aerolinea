@@ -4,6 +4,7 @@ from gestionVuelos.models import Flight
 from datetime import datetime, timedelta
 from decimal import Decimal
 
+
 class FlightRepository:
     @staticmethod
     def get_all() -> list[Flight]:

@@ -5,6 +5,7 @@ from gestionVuelos.models import Ticket, Reservation
 from gestionVuelos.repositories.ticket import TicketRepository
 import uuid
 
+
 class TicketService:
 
     @staticmethod
@@ -17,15 +18,10 @@ class TicketService:
 
     @staticmethod
     def create(
-        reservation_id: int,
-        barcode: str | None = None,
-        status: str = "issued"
+        reservation_id: int, barcode: str | None = None, status: str = "issued"
     ) -> Ticket:
         reservation = get_object_or_404(Reservation, id=reservation_id)
-        ticket = Ticket(
-            reservation=reservation,
-            status=status
-        )
+        ticket = Ticket(reservation=reservation, status=status)
         if barcode:
             ticket.barcode = barcode
         else:
@@ -35,12 +31,7 @@ class TicketService:
         return ticket
 
     @staticmethod
-    def update(
-        ticket_id: int,
-        reservation_id: int,
-        barcode: str,
-        status: str
-    ) -> bool:
+    def update(ticket_id: int, reservation_id: int, barcode: str, status: str) -> bool:
         try:
             ticket = TicketRepository.get_by_id(ticket_id)
             if not ticket:

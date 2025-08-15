@@ -5,15 +5,14 @@ from gestionVuelos.models import Reservation
 from datetime import datetime
 from decimal import Decimal
 
+
 class ReservationRepository:
     @staticmethod
     def get_all() -> QuerySet[Reservation]:
         """
-            Obtiene todos los objetos (reservas)
+        Obtiene todos los objetos (reservas)
         """
         return Reservation.objects.all()
-            
-
 
     @staticmethod
     def get_by_id(reservation_id: int) -> Reservation:
