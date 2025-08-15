@@ -13,6 +13,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class HomeView(View):
     def get(self, request):
         logger.error("Ingresando a view")

@@ -78,7 +78,6 @@ class RegisterForm(forms.Form):
         return cleaned_data
 
 
-
 class LoginForm(forms.Form):
     username = forms.CharField(
         max_length=150,
