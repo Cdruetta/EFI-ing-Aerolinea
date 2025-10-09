@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from django.urls import reverse_lazy
 import os
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,6 +43,12 @@ INSTALLED_APPS = [
     'gestionVuelos',
     'home',
     'widget_tweaks',
+
+    # Apps para API REST
+    'rest_framework',
+    'rest_framework.authtoken',  # token simple (opcional)
+    'drf_yasg',                  # documentación Swagger
+    'django_filters',            # filtros en endpoints
 ]
 
 MIDDLEWARE = [
@@ -149,12 +156,34 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
 # URLs para autenticación
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = reverse_lazy('gestionVuelos:home')
 LOGOUT_REDIRECT_URL = reverse_lazy('login')
 
+
+# Django REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+}
+
+# Configuración JWT
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+
+# Integración con Sentry
 import logging
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
