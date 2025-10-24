@@ -444,8 +444,8 @@ python manage.py createsuperuser
 
 ## 👨‍💻 Desarrollado por
 
-**Estudiante de Ingeniería**  
-**Fecha**: 2024  
+**Druetta Cristian**  
+**Fecha**: 2025      
 **Proyecto**: Sistema de Gestión de Vuelos
 
 ---
