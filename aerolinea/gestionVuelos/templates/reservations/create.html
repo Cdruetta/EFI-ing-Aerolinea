@@ -35,6 +35,9 @@
             
             <form method="post">
                 {% csrf_token %}
+                {# --- Campo oculto del pasajero --- #}
+                <input type="hidden" name="passenger_id" value="{{ passenger.id }}">
+
                 <div class="airplane-layout">
                     {% for row, seats in seat_rows.items %}
                     <div class="seat-row mb-3">

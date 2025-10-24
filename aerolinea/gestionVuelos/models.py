@@ -92,6 +92,7 @@ class Flight(models.Model):
 class Reservation(models.Model):
     RESERVATION_STATUS_CHOICES = [
         ("reserved", "Reserved"),
+        ("confirmed", "Confirmed"),
         ("cancelled", "Cancelled"),
     ]
 

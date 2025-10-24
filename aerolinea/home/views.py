@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views import View
 from django.utils.translation import gettext as _
-
+from gestionVuelos.models import Passenger
 
 from home.forms import LoginForm, RegisterForm
 
@@ -68,11 +68,32 @@ class RegisterView(View):
     def post(self, request):
         form = RegisterForm(request.POST)
         if form.is_valid():
-            User.objects.create_user(
+            # Crear el usuario
+            user = User.objects.create_user(
                 username=form.cleaned_data["username"],
                 password=form.cleaned_data["password1"],
                 email=form.cleaned_data["email"],
             )
+            
+            # Actualizar el pasajero creado por la señal con los datos reales
+            try:
+                passenger = Passenger.objects.get(user=user)
+                passenger.document_number = form.cleaned_data["document_number"]
+                passenger.full_name = form.cleaned_data["username"]
+                passenger.email = form.cleaned_data["email"]
+                passenger.save()
+            except Passenger.DoesNotExist:
+                # Si por alguna razón no existe el pasajero, crearlo manualmente
+                Passenger.objects.create(
+                    user=user,
+                    full_name=form.cleaned_data["username"],
+                    document_number=form.cleaned_data["document_number"],
+                    email=form.cleaned_data["email"],
+                    phone='',
+                    birth_date='1900-01-01',
+                    document_type=Passenger.DNI
+                )
+            
             messages.success(request, "Usuario creado correctamente.")
             return redirect("login")
 

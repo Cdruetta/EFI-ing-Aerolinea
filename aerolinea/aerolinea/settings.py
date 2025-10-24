@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     # Apps para API REST
     'rest_framework',
+    'rest_framework_simplejwt',  # JWT authentication
     'rest_framework.authtoken',  # token simple (opcional)
     'drf_yasg',                  # documentación Swagger
     'django_filters',            # filtros en endpoints
@@ -202,3 +203,30 @@ sentry_sdk.init(
         sentry_logging
     ],
 )
+
+# Configuración de Swagger/OpenAPI
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+    'JSON_EDITOR': True,
+    'SUPPORTED_SUBMIT_METHODS': [
+        'get',
+        'post',
+        'put',
+        'delete',
+        'patch'
+    ],
+    'OPERATIONS_SORTER': 'alpha',
+    'TAGS_SORTER': 'alpha',
+    'DOC_EXPANSION': 'list',
+    'DEEP_LINKING': True,
+    'SHOW_EXTENSIONS': True,
+    'SHOW_COMMON_EXTENSIONS': True,
+}
+

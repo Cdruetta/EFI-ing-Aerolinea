@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView, ListView
 from django.db.models import Q
 
-from gestionVuelos.models import Passenger, Flight, Plane, Reservation, Seat, Reservation
+from gestionVuelos.models import Passenger, Flight, Plane, Reservation, Seat
 from gestionVuelos.forms import FlightForm, PassengerForm, PlaneForm
 
 class StaffRequiredMixin(UserPassesTestMixin):

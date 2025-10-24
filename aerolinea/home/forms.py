@@ -1,7 +1,32 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from gestionVuelos.models import Passenger  # Asegurate de importar Passenger
 
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        max_length=150,
+        label="Nombre de usuario",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control w-60 personalizado",
+                "placeholder": "Ingrese nombre de usuario",
+                "style": "background-color: #f0f0f0;",
+            }
+        ),
+    )
+    
+    password = forms.CharField(
+        max_length=128,
+        label="Password",
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control w-60 personalizado",
+                "placeholder": "Ingrese contraseña",
+                "style": "background-color: #f0f0f0;",
+            }
+        ),
+    )
 
 class RegisterForm(forms.Form):
     username = forms.CharField(
@@ -51,6 +76,18 @@ class RegisterForm(forms.Form):
         ),
     )
 
+    document_number = forms.CharField(
+        max_length=20,
+        label="Número de documento",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control w-60 personalizado",
+                "placeholder": "Ingrese su número de documento",
+                "style": "background-color: #f0f0f0;",
+            }
+        ),
+    )
+
     # VALIDACIONES
     def clean_username(self):
         username = self.cleaned_data.get("username")
@@ -64,10 +101,16 @@ class RegisterForm(forms.Form):
             raise ValidationError("El email ya está en uso.")
         return email
 
+    def clean_document_number(self):
+        document_number = self.cleaned_data.get("document_number")
+        if Passenger.objects.filter(document_number=document_number).exists():
+            raise ValidationError("Este número de documento ya está registrado.")
+        return document_number
+
     def clean(self):
         cleaned_data = super().clean()
         if not cleaned_data:
-            return cleaned_data  # o simplemente return
+            return cleaned_data
 
         pass1 = cleaned_data.get("password1")
         pass2 = cleaned_data.get("password2")
@@ -76,29 +119,3 @@ class RegisterForm(forms.Form):
             raise ValidationError("Las contraseñas no coinciden.")
 
         return cleaned_data
-
-
-
-class LoginForm(forms.Form):
-    username = forms.CharField(
-        max_length=150,
-        label="Nombre de usuario",
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control w-60 personalizado",
-                "placeholder": "Ingrese nombre de usuario",
-                "style": "background-color: #f0f0f0;",
-            }
-        ),
-    )
-    password = forms.CharField(
-        max_length=128,
-        label="Password",
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "form-control w-60 personalizado",
-                "placeholder": "Ingrese contraseña",
-                "style": "background-color: #f0f0f0;",
-            }
-        ),
-    )
