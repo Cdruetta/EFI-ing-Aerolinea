@@ -19,7 +19,7 @@ def prueba_sentry(request):
 # Swagger
 schema_view = get_schema_view(
     openapi.Info(
-        title="API Aerolínea",
+        title="API Aerolínea GCsoft",
         default_version='v1',
         description="Documentación API REST de la aerolínea",
     ),

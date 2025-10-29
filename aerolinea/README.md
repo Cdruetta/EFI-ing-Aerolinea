@@ -73,103 +73,131 @@ python manage.py runserver
 
 ## 🧪 Ejecución de Tests
 
-### Tests Unitarios de la API
+El proyecto incluye tests con el runner de Django (unittest) y es compatible con pytest (si prefieres usarlo). A continuación tienes instrucciones claras para ambos enfoques.
 
-El proyecto incluye tests unitarios completos para todos los endpoints de la API. Aquí te explico cómo ejecutarlos:
+Recomendación: usa el runner de Django para ejecutar rápidamente (`manage.py test`) o `pytest` si quieres fixtures y salida adicional.
 
-#### 1. Ejecutar todos los tests de la API
-```bash
-python manage.py test gestionVuelos.tests_api
+### Usando el runner de Django (por defecto)
+
+Ejecuta los tests desde la carpeta del proyecto (donde está `manage.py`):
+
+```zsh
+cd /ruta/al/proyecto/aerolinea
+source .venv/bin/activate    # si usas un virtualenv
+python manage.py test
 ```
 
-#### 2. Ejecutar tests específicos por clase
-```bash
-# Tests de vuelos
-python manage.py test gestionVuelos.tests_api.FlightAPITestCase
+Algunos comandos útiles:
 
-# Tests de pasajeros
-python manage.py test gestionVuelos.tests_api.PassengerAPITestCase
+- Ejecutar todos los tests:
+  ```zsh
+  python manage.py test
+  ```
+- Ejecutar un archivo/módulo concreto (ej.: tests del API):
+  ```zsh
+  python manage.py test api.tests
+  ```
+- Ejecutar una clase concreta:
+  ```zsh
+  python manage.py test api.tests.test_flights_api.TestFlightsAPI
+  ```
+- Ejecutar un método concreto:
+  ```zsh
+  python manage.py test api.tests.test_flights_api.TestFlightsAPI.test_list_flights
+  ```
+- Ejecutar con más verbosidad:
+  ```zsh
+  python manage.py test -v 2
+  ```
 
-# Tests de reservas
-python manage.py test gestionVuelos.tests_api.ReservationAPITestCase
+### Usando pytest (opcional)
 
-# Tests de boletos
-python manage.py test gestionVuelos.tests_api.TicketAPITestCase
+Si prefieres pytest, ya se agregó un `pytest.ini` que configura `DJANGO_SETTINGS_MODULE`. Instala `pytest` y `pytest-django`:
+
+```zsh
+source .venv/bin/activate
+pip install pytest pytest-django
+pytest -q
 ```
 
-#### 3. Ejecutar un test específico
-```bash
-# Ejemplo: test de listar vuelos
-python manage.py test gestionVuelos.tests_api.FlightAPITestCase.test_list_flights_authorized
+- Ejecutar un archivo concreto con pytest:
+  ```zsh
+  pytest api/tests/test_flights_api.py -q
+  ```
+- Ejecutar una prueba concreta:
+  ```zsh
+  pytest api/tests/test_flights_api.py::TestFlightsAPI::test_list_flights -q
+  ```
+
+
+- Asegúrate de ejecutar los tests desde la raíz del proyecto (donde está `manage.py`).
+- Si pytest no encuentra Django settings, confirma que `pytest.ini` contiene `DJANGO_SETTINGS_MODULE = aerolinea.settings`.
+- Para tests que usan la base de datos, `pytest-django` gestionará la creación/rollback de la DB de pruebas.
+
+### Resultado esperado
+
+Cuando todo pase verás algo como:
+
 ```
-
-#### 4. Ejecutar con verbosidad
-```bash
-# Mostrar detalles de cada test
-python manage.py test gestionVuelos.tests_api -v 2
-
-# Mostrar solo los nombres de los tests
-python manage.py test gestionVuelos.tests_api -v 1
-```
-
-#### 5. Ejecutar tests con cobertura
-```bash
-# Instalar coverage (opcional)
-pip install coverage
-
-# Ejecutar con cobertura
-coverage run --source='.' manage.py test gestionVuelos.tests_api
-coverage report
-coverage html  # Genera reporte HTML
-```
-
-### Cobertura de Tests
-
-Los tests cubren:
-
-#### **FlightAPITestCase** (5 tests)
-- ✅ Listar vuelos sin autenticación
-- ✅ Listar vuelos con autenticación  
-- ✅ Crear vuelos (solo administradores)
-- ✅ Buscar vuelos por origen/destino
-- ✅ Ver pasajeros de vuelo (solo administradores)
-
-#### **PassengerAPITestCase** (2 tests)
-- ✅ Crear pasajeros (solo administradores)
-- ✅ Ver reservas de pasajero
-
-#### **ReservationAPITestCase** (4 tests)
-- ✅ Crear reserva
-- ✅ Verificar disponibilidad de asiento
-- ✅ Confirmar reserva
-- ✅ Cancelar reserva
-
-#### **TicketAPITestCase** (2 tests)
-- ✅ Generar boleto (solo administradores)
-- ✅ Consultar boleto por código
-
-### Interpretación de Resultados
-
-#### ✅ Tests Exitosos
-```
-.............  # 13 tests ejecutados
+Found 17 test(s).
 ----------------------------------------------------------------------
-Ran 13 tests in 18.977s
+Ran 17 tests in 11.9s
 OK
 ```
 
-#### ❌ Tests Fallidos
-```
-F............  # 1 test falló
-----------------------------------------------------------------------
-FAIL: test_create_flight_admin_only
-```
+Si hay fallos, copia la salida y la revisamos juntos.
+
 
 ## 🌐 Uso de la API
 
 ### 1. Acceder a la documentación
 - **Swagger UI**: `http://127.0.0.1:8000/swagger/`
 - **API Endpoints**: `http://127.0.0.1:8000/api/`
+
+### Swagger (drf-yasg)
+
+La documentación interactiva Swagger ya está configurada en el proyecto y expuesta en `/swagger/`.
+
+- Iniciar servidor:
+  ```zsh
+  python manage.py runserver
+  # luego abrir en el navegador http://127.0.0.1:8000/swagger/
+  ```
+
+- Probar endpoints protegidos (JWT):
+  1. Obtener tokens:
+     ```zsh
+     curl -X POST http://127.0.0.1:8000/api/token/ \
+       -H "Content-Type: application/json" \
+       -d '{"username": "tu_usuario", "password": "tu_password"}'
+     ```
+  2. En Swagger UI pulsa "Authorize" e ingresa en el campo:
+     ```text
+     Bearer <tu_token_jwt>
+     ```
+     Esto añadirá el header `Authorization` a las peticiones desde la UI.
+
+- Configuración recomendada (opcional):
+  En `settings.py` puedes añadir entrada para que Swagger UI reconozca la definición de seguridad:
+
+  ```py
+  SWAGGER_SETTINGS = {
+      'SECURITY_DEFINITIONS': {
+          'Bearer': {
+              'type': 'apiKey',
+              'name': 'Authorization',
+              'in': 'header',
+              'description': "JWT Authorization header. Ejemplo: 'Authorization: Bearer <token>'",
+          }
+      },
+  }
+  ```
+
+- Poner Swagger en español (opcional):
+  - Los textos de `openapi.Info` (título, descripción) ya están en español en `urls.py`.
+  - Para traducir la interfaz (botones, labels) puedes sobreescribir la plantilla de drf-yasg `swagger-ui.html` en `templates/drf_yasg/swagger-ui.html` y forzar `lang: 'es'` al inicializar `SwaggerUIBundle`, o incluir un pequeño script que reemplace los textos visibles.
+  - Si quieres, puedo crear el template override y un script de traducción rápida.
+
 
 ### 2. Autenticación JWT
 ```bash

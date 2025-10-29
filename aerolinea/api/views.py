@@ -9,10 +9,11 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from datetime import datetime
+from api.mixins import AuthView, AuthAdminView
 
-# Importar modelos y serializers desde gestionVuelos
+# Importar modelos desde gestionVuelos y serializers desde api
 from gestionVuelos.models import Flight, Passenger, Reservation, Plane, Seat, Ticket
-from gestionVuelos.serializers import (
+from api.serializers import (
     FlightSerializer,
     PassengerSerializer,
     ReservationSerializer,
@@ -22,7 +23,7 @@ from gestionVuelos.serializers import (
 )
 
 
-class FlightViewSet(viewsets.ModelViewSet):
+class FlightViewSet(AuthAdminView, viewsets.ModelViewSet):
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
@@ -32,9 +33,9 @@ class FlightViewSet(viewsets.ModelViewSet):
     ordering = ['departure_time']
 
     def get_permissions(self):
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:
-            return [IsAdminUser()]
-        return [AllowAny()]
+        if self.action in ['list', 'retrieve', 'available', 'search']:
+            return [AllowAny()]
+        return [IsAdminUser()]
 
     @action(detail=False, methods=['get'], permission_classes=[AllowAny])
     def available(self, request):
@@ -111,7 +112,7 @@ class FlightViewSet(viewsets.ModelViewSet):
         })
 
 
-class PassengerViewSet(viewsets.ModelViewSet):
+class PassengerViewSet(AuthView, viewsets.ModelViewSet):
     queryset = Passenger.objects.all()
     serializer_class = PassengerSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
@@ -226,7 +227,7 @@ class PassengerViewSet(viewsets.ModelViewSet):
         })
 
 
-class ReservationViewSet(viewsets.ModelViewSet):
+class ReservationViewSet(AuthView, viewsets.ModelViewSet):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
@@ -295,16 +296,16 @@ class ReservationViewSet(viewsets.ModelViewSet):
         return Response({'message': 'Reserva cancelada exitosamente', 'reservation': serializer.data})
 
 
-class PlaneViewSet(viewsets.ModelViewSet):
+class PlaneViewSet(AuthAdminView, viewsets.ModelViewSet):
     queryset = Plane.objects.all()
     serializer_class = PlaneSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['model', 'manufacturer']
 
     def get_permissions(self):
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:
-            return [IsAdminUser()]
-        return [AllowAny()]
+        if self.action in ['list', 'retrieve', 'seats', 'available_seats']:
+            return [AllowAny()]
+        return [IsAdminUser()]
 
     @action(detail=True, methods=['get'], permission_classes=[AllowAny])
     def seats(self, request, pk=None):
@@ -325,7 +326,7 @@ class PlaneViewSet(viewsets.ModelViewSet):
         return Response({'plane': {'id': plane.id, 'model': plane.model, 'manufacturer': plane.manufacturer, 'capacity': plane.capacity}, 'available_seats': len(seats_data), 'seats': seats_data})
 
 
-class TicketViewSet(viewsets.ModelViewSet):
+class TicketViewSet(AuthView, viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
@@ -334,7 +335,7 @@ class TicketViewSet(viewsets.ModelViewSet):
     ordering = ['-issued_at']
 
     def get_permissions(self):
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+        if self.action in ['create', 'update', 'partial_update', 'destroy', 'generate']:
             return [IsAdminUser()]
         return [IsAuthenticated()]
 
