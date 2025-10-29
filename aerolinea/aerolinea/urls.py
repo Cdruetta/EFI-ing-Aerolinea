@@ -34,7 +34,7 @@ urlpatterns = [
 
 # Rutas de API REST y documentación
 urlpatterns += [
-    path('api/', include('gestionVuelos.urls_api')),           # Endpoints API
+    path('api/', include('api.urls')),           # Endpoints API
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),   # JWT token
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # JWT refresh
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'gestionVuelos',
     'home',
+    'api',
     'widget_tweaks',
 
     # Apps para API REST
