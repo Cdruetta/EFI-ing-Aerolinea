@@ -2,6 +2,7 @@
 env/
 .env
 .env/
+.venv/
 <<<<<<< HEAD
 
 # Python bytecode y caches
